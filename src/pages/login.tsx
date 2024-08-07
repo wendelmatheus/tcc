@@ -31,7 +31,7 @@ export default function Login() {
                   className="w-full px-4 py-2 mt-1 text-gray-900 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="email"
                   id="email"
-                  placeholder="Digite o e-mail"
+                  placeholder="Digite seu e-mail..."
                   aria-label="email"
                   required
                 />
@@ -42,7 +42,7 @@ export default function Login() {
                   className="w-full px-4 py-2 mt-1 text-gray-900 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   type="password"
                   id="password"
-                  placeholder="Digite a sua senha"
+                  placeholder="Digite sua senha..."
                   aria-label="password"
                   required
                 />
