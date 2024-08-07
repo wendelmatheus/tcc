@@ -20,7 +20,7 @@ export default function Login() {
             <path d="M19 12H5m7-7l-7 7 7 7" />
           </svg>
         </button>
-      <div className="h-screen font-sans bg-gray-800 flex items-center justify-center">
+      <div className="h-screen font-sans bg-gray-700 flex items-center justify-center">
         <div className="w-full max-w-md">
           <div className="bg-gray-900 p-8 rounded-lg shadow-lg">
             <h2 className="text-2xl font-bold text-white mb-6 text-center">LOGIN</h2>
