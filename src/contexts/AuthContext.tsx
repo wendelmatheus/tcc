@@ -42,18 +42,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
-//   useEffect(() => {
-//     const { "sitededenuncias.token": token } = parseCookies();
-
-//     if (token) {
-//       const decodedToken = jwt.decode(token) as { nome: string; email: string };
-//       const nome = decodedToken.nome;
-//       const email = decodedToken.email;
-
-//       setUser({ nome, email });
-//     }
-//   }, []);
-
   async function signIn(email: string, senha: string, onUnauthorized: () => void, onNotFound: () => void) {
     // chamada para a api, enviar email e senha do usuário, trazer o token e salvar (cookies)
     var myHeaders = new Headers();
@@ -104,7 +92,11 @@ export function AuthProvider({ children }: AuthProviderProps) {
   async function signOut() {
     destroyCookie(null, "sitededenuncias.token", { path: "/" });
 
-    router.push("/");
+    if(router.pathname === "/") {
+      router.reload();
+    } else {
+      router.push("/");
+    }
   }
 
   function handleAlertClose() {

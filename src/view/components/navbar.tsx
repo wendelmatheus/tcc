@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { destroyCookie, parseCookies } from 'nookies';
 import router from "next/router";
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { AuthContext } from '@/contexts/AuthContext';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -18,6 +19,9 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+
+  const { user, signOut } = useContext(AuthContext)
+
   const router = useRouter();
   const currentPath = router.pathname;
   const [token, setToken] = useState<string | null>(null);
@@ -27,14 +31,8 @@ export default function Navbar() {
     setToken(cookies['sitededenuncias.token'] || null);
   }, []);
 
-  async function signOut() {
-    destroyCookie(null, "sitededenuncias.token", { path: "/" });
-
-    if(router.pathname === "/") {
-      router.reload();
-    } else {
-      router.push("/");
-    }
+  async function handleClickSair() {
+    await signOut();
   }
 
   return (
@@ -86,7 +84,7 @@ export default function Navbar() {
                     <span className="sr-only">Open user menu</span>
                     <img
                       alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src="https://github.com/wendelmatheus.png"
                       className="h-8 w-8 rounded-full"
                     />
                   </MenuButton>
@@ -101,7 +99,7 @@ export default function Navbar() {
                     </a>
                   </MenuItem>
                   <MenuItem>
-                    <p onClick={signOut} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                    <p onClick={handleClickSair} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
                       Sair
                     </p>
                   </MenuItem>
