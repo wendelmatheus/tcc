@@ -6,7 +6,33 @@ export class LoginController {
 
     static handleClickLogin(email: string, senha: string) {
         if (this.verificarDados(email, senha)) {
-            alert("ok. pronto para verificar")
+            const myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+            
+            const urlencoded = new URLSearchParams();
+            urlencoded.append("email", email);
+            urlencoded.append("senha", senha);
+            
+            const requestOptions = {
+              method: "POST",
+              headers: myHeaders,
+              body: urlencoded,
+              //redirect: "follow"
+            };
+            
+            fetch("/api/autenticar", requestOptions)
+              .then((response) => {
+                if(response.status == 200) {
+                    alert("Pode logar");
+                } else if(response.status == 401) {
+                    alert("email ou senha incorreta");
+                } else if(response.status == 404) {
+                    alert("usuario não encontrado")
+                }
+                return response;
+              })
+              .then((result) => console.log(result))
+              .catch((error) => console.error(error));
         } else {
             alert("dados incompletos")
         }

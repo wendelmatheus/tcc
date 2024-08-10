@@ -1,6 +1,4 @@
-
-import { Entity, Column, PrimaryColumn } from "typeorm";
-
+import { Entity, Column, PrimaryColumn, OneToMany, Relation } from "typeorm";
 @Entity({ name: "usuarios" })
 export class Usuario {
   @Column({ length: 60 })
@@ -9,13 +7,36 @@ export class Usuario {
   @PrimaryColumn({ length: 60 })
   email!: string;
 
-  @Column({ length: 60 })
+  @Column({ length: 64 })
   senha!: string;
 
-  @Column("bytea", { nullable: true })
+  @Column("bytea", {
+    nullable: true,
+    transformer: {
+      from: (value: Buffer): number[] => Array.from(new Uint8Array(value)),
+      to: (value: number[]): Buffer => Buffer.from(value),
+    },
+  })
   salt?: number[];
-
-  valido(confirmacao: string) {
-    return this.senha === confirmacao;
-  }
 }
+
+// import { Entity, Column, PrimaryColumn } from "typeorm";
+
+// @Entity({ name: "usuarios" })
+// export class Usuario {
+//   @Column({ length: 60 })
+//   name!: string;
+
+//   @PrimaryColumn({ length: 60 })
+//   email!: string;
+
+//   @Column({ length: 60 })
+//   senha!: string;
+
+//   @Column("bytea", { nullable: true })
+//   salt?: number[];
+
+//   valido(confirmacao: string) {
+//     return this.senha === confirmacao;
+//   }
+// }
