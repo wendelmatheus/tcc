@@ -1,11 +1,56 @@
-import { LoginController } from "@/controller/loginController";
+import { AuthContext } from "@/contexts/AuthContext";
 import router from "next/router";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import Alert from "../view/components/alert";
 
 export default function Login(): JSX.Element {
+  const { signIn } = useContext(AuthContext);
 
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState("");
+
+  async function requisitarApiAutenticar(email: string, senha: string) {
+    try {
+      await signIn(
+        email,
+        senha,
+        () => {
+          setAlertMessage("Email ou Senha Incorreta");
+          setAlertType("error");
+          setShowAlert(true);
+        },
+        () => {
+          setAlertMessage("Usuário não encontrado");
+          setAlertType("error");
+          setShowAlert(true);
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  function verificarDados(email: string, senha: string) {
+    return email !== "" && senha !== "";
+  }
+
+  function handleClickEntrar(): void {
+    if (verificarDados(email, senha)) {
+      requisitarApiAutenticar(email, senha);
+    } else {
+      setAlertMessage("Preencha o email e senha");
+      setAlertType("error");
+      setShowAlert(true);
+    }
+  }
+
+  function handleAlertClose() {
+    setShowAlert(false);
+  }
 
     return (
       <>
@@ -57,7 +102,7 @@ export default function Login(): JSX.Element {
               </div>
               <div className="flex items-center justify-between mt-4">
                 <button
-                  onClick={() => LoginController.handleClickLogin(email, senha)}
+                  onClick={handleClickEntrar}
                   //type="submit"
                   className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
@@ -71,6 +116,7 @@ export default function Login(): JSX.Element {
                 </a>
               </div>
             </div>
+            {showAlert && <Alert type={alertType} message={alertMessage} onClose={handleAlertClose} />}
           </div>
         </div>
       </div>

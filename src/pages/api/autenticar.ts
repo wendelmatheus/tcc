@@ -4,6 +4,7 @@ import { Usuario } from "../../../db/entities/Usuario";
 import { AppDataSource } from "../../../db/controller/conexaoBanco";
 import { QueryFailedError } from "typeorm";
 import * as crypto from "crypto";
+import * as jwt from "jsonwebtoken";
 
 function verificarDados(email: string | undefined, senha: string | undefined) {
   return (email ?? "") !== "" && (senha ?? "") !== "";
@@ -34,8 +35,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         // comparar para ver se é o mesmo do banco
         if (hashSaltUsuario == user.senha) {
 
+          const chaveSecreta = process.env.CHAVE_SECRETA;
+          
+          const token = jwt.sign({ nome: user.name, email: user.email }, chaveSecreta!, { expiresIn: "1h" });
+          //const token = jwt.sign({ nome: user.name, email: user.email }, );
 
-          res.status(200).json({ nome: user.name, email: user.email });
+          res.status(200).json({ token, nome: user.name, email: user.email });
         } else {
           // se não, não logar e informar o usuário
           res.status(401).end();
