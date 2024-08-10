@@ -2,7 +2,6 @@ import { log } from "console";
 import { NextApiRequest, NextApiResponse } from "next";
 import { Usuario } from "../../../db/entities/Usuario";
 import { AppDataSource } from "../../../db/controller/conexaoBanco";
-import { QueryFailedError } from "typeorm";
 import * as crypto from "crypto";
 import * as jwt from "jsonwebtoken";
 
@@ -36,7 +35,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         if (hashSaltUsuario == user.senha) {
 
           const chaveSecreta = process.env.CHAVE_SECRETA;
-          
+
           const token = jwt.sign({ nome: user.name, email: user.email }, chaveSecreta!, { expiresIn: "1h" });
           //const token = jwt.sign({ nome: user.name, email: user.email }, );
 
