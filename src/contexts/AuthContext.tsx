@@ -8,6 +8,7 @@ import router from "next/router";
 type User = {
   nome: string;
   email: string;
+  imagem: string;
 };
 
 type AuthContextType = {
@@ -34,11 +35,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { "sitededenuncias.token": token } = parseCookies();
 
     if (token) {
-      const decodedToken = jwt.decode(token) as { nome: string; email: string };
+      const decodedToken = jwt.decode(token) as { nome: string; email: string; imagem?: string };
       const nome = decodedToken.nome;
       const email = decodedToken.email;
+      const imagem = decodedToken.imagem; // Certifique-se de que a imagem é opcional
 
-      setUser({ nome, email });
+      setUser({ nome, email, imagem: imagem ?? "https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" });
     }
   }, []);
 
@@ -61,10 +63,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       .then((response) => {
         if (response.status == 200) {
           response.json().then((data) => {
+
             const token = data.token;
             const nome: string = data.nome;
-            const email = data.email;
-            const user = { nome, email };
+            const email: string = data.email;
+            const imagem: string = data.imagem;
+
+            const user = { nome, email, imagem };
 
             setCookie(undefined, "sitededenuncias.token", token, {
               maxAge: 60 * 60 * 1, // 1 hour

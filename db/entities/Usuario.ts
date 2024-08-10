@@ -10,6 +10,9 @@ export class Usuario {
   @Column({ length: 64 })
   senha!: string;
 
+  @Column({ nullable: true })
+  imagem?: string;
+
   @Column("bytea", {
     nullable: true,
     transformer: {

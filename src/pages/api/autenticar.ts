@@ -39,7 +39,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           const token = jwt.sign({ nome: user.name, email: user.email }, chaveSecreta!, { expiresIn: "1h" });
           //const token = jwt.sign({ nome: user.name, email: user.email }, );
 
-          res.status(200).json({ token, nome: user.name, email: user.email });
+          res.status(200).json({ token, nome: user.name, email: user.email, imagem: user.imagem });
         } else {
           // se não, não logar e informar o usuário
           res.status(401).end();

@@ -10,7 +10,7 @@ function verificarDados(nome: string | undefined, email: string | undefined, sen
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log(req.body);
-  const { nome, email, senha } = req.body;
+  const { nome, email, senha, imagem } = req.body;
 
   const conexao = await AppDataSource;
   if (conexao) {
@@ -22,7 +22,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const hashSalt: string = crypto.createHash("sha256").update(data).digest("base64");
 
       const repositorio = conexao.getRepository(Usuario);
-      const salvar = repositorio.create({ name: nome, email, senha: hashSalt, salt });
+      const salvar = repositorio.create({
+         name: nome,
+         email: email,
+         senha: hashSalt, 
+         salt: salt, 
+         imagem: imagem
+        });
       try {
         await repositorio.insert(salvar);
         res.status(202).end();
