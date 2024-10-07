@@ -35,12 +35,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const { "sitededenuncias.token": token } = parseCookies();
 
     if (token) {
-      const decodedToken = jwt.decode(token) as { nome: string; email: string; imagem?: string };
+      const decodedToken = jwt.decode(token) as { nome: string; email: string };
       const nome = decodedToken.nome;
       const email = decodedToken.email;
-      const imagem = decodedToken.imagem; // Certifique-se de que a imagem é opcional
+      
 
-      setUser({ nome, email, imagem: imagem ?? "https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" });
+      setUser({ nome, email, imagem: "https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png" });
     }
   }, []);
 
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             const token = data.token;
             const nome: string = data.nome;
             const email: string = data.email;
-            const imagem: string = data.imagem;
+            const imagem: string = "https://voxnews.com.br/wp-content/uploads/2017/04/unnamed.png";
 
             const user = { nome, email, imagem };
 

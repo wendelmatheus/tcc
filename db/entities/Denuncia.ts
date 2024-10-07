@@ -1,26 +1,18 @@
-import { Entity, Column, PrimaryColumn } from "typeorm";
+import { Entity, Column, PrimaryColumn, ManyToOne } from "typeorm";
+import { Denunciante } from "./Denunciante";
 
 @Entity({ name: "denuncias" })
 export class Denuncia {
   @PrimaryColumn({ length: 36 })
   id!: string;
 
-  @Column({ length: 255 })
-  nome!: string;
-
-  @Column({ length: 255 })
-  email!: string;
-
-  @Column({ length: 255 })
+  @Column({ length: 60 })
   assunto!: string;
 
   @Column("text")
   mensagem!: string;
 
-  @Column({ length: 64, nullable: true })
-  imagem?: string;
-
-  @Column({ length: 50, default: "recebido" })
+  @Column({ length: 60, default: "recebido" })
   status!: string;
 
   @Column("text", { nullable: true })
@@ -28,4 +20,7 @@ export class Denuncia {
 
   @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
   data_criacao!: Date;
+
+  @ManyToOne(() => Denunciante, (denunciante) => denunciante.id)
+  denunciante!: Denunciante; 
 }

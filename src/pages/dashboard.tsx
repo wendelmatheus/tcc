@@ -3,6 +3,7 @@ import { parseCookies } from "nookies";
 import { getAPIClient } from "./api/axios";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
+import { CldImage } from "next-cloudinary";
 
 const navigation = [
   { name: 'Home', href: '/', emoji: "🏠" },
@@ -65,7 +66,7 @@ export default function Dashboard() {
         <header className="bg-gray-800 shadow-md h-16 flex items-center justify-between px-6 md:px-8">
           <div className="flex items-center">
             <button
-              className="md:hidden text-gray-800 p-2"
+              className="md:hidden text-white p-2"
               onClick={() => setIsSidebarOpen(true)}
             >
               ☰
@@ -78,7 +79,7 @@ export default function Dashboard() {
           <div className="relative">
             <img
               src={user?.imagem}             
-              alt="Profile"
+              alt="Profile Photo"
               className="w-10 h-10 rounded-full cursor-pointer"
               onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
             />
@@ -87,13 +88,19 @@ export default function Dashboard() {
                 <div className="flex flex-col items-center px-4 py-2">
                   <img
                     src={user?.imagem}
-                    alt="Profile"
+                    alt="Profile photo"
                     className="w-12 h-12 rounded-full mb-2"
                   />
                   <p className="text-sm font-medium text-gray-800">{user?.nome}</p>
                   <p className="text-xs text-gray-500">{user?.email}</p>
                 </div>
                 <div className="border-t border-gray-200 mt-2"></div>
+                <button
+                  className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200"
+                  onClick={() => {}}
+                >
+                  Mudar foto
+                </button>
                 <button
                   className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200"
                   onClick={handleClickSair}
