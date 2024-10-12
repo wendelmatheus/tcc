@@ -23,11 +23,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const repositorioDenunciante = conexao.getRepository(Denunciante);
 
       try {
-        // Verificar se o denunciante já existe pelo email
         let denunciante = await repositorioDenunciante.findOneBy({ email });
 
         if (!denunciante) {
-          // Se não existir, criar o novo denunciante
           denunciante = repositorioDenunciante.create({
             nome,
             email,
@@ -35,25 +33,26 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           await repositorioDenunciante.save(denunciante);
         }
 
-        // Agora salvar a denúncia associada ao denunciante
         const repositorioDenuncia = conexao.getRepository(Denuncia);
 
+        const idDenuncia = uuidv4()
+
         const salvarDenuncia = repositorioDenuncia.create({
-          id: uuidv4(),  // Geração do UUID para a denúncia
+          id: idDenuncia,
           assunto,
           mensagem,
           status: 'Recebido',
           resposta: '',
           data_criacao: new Date(),
-          denunciante,  // Associar o objeto denunciante diretamente
+          denunciante,
         });
 
         await repositorioDenuncia.save(salvarDenuncia);
 
-        res.status(200).json({ message: 'Denúncia cadastrada com sucesso!' });
+        res.status(200).json({ message: `Denúncia cadastrada com sucesso! Código da denúncia: ${idDenuncia}` });
       } catch (erro) {
         console.error(erro);
-        res.status(500).json({ message: 'Erro ao cadastrar denúncia.' });
+        res.status(500).end();
       }
     } else {
       res.status(400).json({ message: 'Dados incompletos' });
