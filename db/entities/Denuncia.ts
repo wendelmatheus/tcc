@@ -21,6 +21,6 @@ export class Denuncia {
   @Column("timestamp", { default: () => "CURRENT_TIMESTAMP" })
   data_criacao!: Date;
 
-  @ManyToOne(() => Denunciante, (denunciante) => denunciante.id)
+  @ManyToOne(() => Denunciante, (denunciante) => denunciante.email)
   denunciante!: Denunciante; 
 }
