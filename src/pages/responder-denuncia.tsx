@@ -15,6 +15,7 @@ interface Denunciante {
     mensagem: string;
     status: string;
     data_criacao: string; // ou Date, dependendo de como você está tratando a data
+    resposta: string;
     denunciante: Denunciante; // Alterado para incluir o objeto denunciante
   }
 
@@ -22,7 +23,7 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
   const { user, signOut } = useContext(AuthContext);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);    
-  const [resposta, setResposta] = useState("");
+  const [resposta, setResposta] = useState(denuncia.resposta || "");
 
   async function handleClickSair() {
     await signOut();
@@ -42,6 +43,57 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
       alert("Erro ao enviar a resposta.");
     }
   }
+
+    // Função para enviar o email ao denunciante
+    async function handleEnviarEmail() {
+        const apiClient = getAPIClient();
+        
+        // Verifica se existe uma resposta válida
+        const respostaParaEmail = resposta || denuncia.resposta;
+    
+        if (!respostaParaEmail) {
+          alert("Erro: Resposta não preenchida!");
+          return;
+        }
+    
+    //     const emailContent = `
+    //     <div style="font-family: Arial, sans-serif; line-height: 1.5;">
+    //       <h2 style="color: #333;">Resposta à sua denúncia</h2>
+    //       <p>Olá <strong>${denuncia.denunciante.nome}</strong>,</p>
+    //       <p>Abaixo estão os detalhes da sua denúncia e nossa resposta:</p>
+    //       <hr style="border: none; border-bottom: 1px solid #ddd; margin: 20px 0;">
+          
+    //       <p><strong>Código da Denúncia:</strong> ${denuncia.id}</p>
+    //       <p><strong>Data da Denúncia:</strong> ${new Date(denuncia.data_criacao).toLocaleString()}</p>
+    //       <p><strong>Assunto:</strong> ${denuncia.assunto}</p>
+    //       <p><strong>Denúncia:</strong> ${denuncia.mensagem}</p>
+    //       <p><strong>Resposta:</strong> ${respostaParaEmail}</p>
+          
+    //       <hr style="border: none; border-bottom: 1px solid #ddd; margin: 20px 0;">
+    //       <p style="font-size: 12px; color: #777;">Se você tiver mais perguntas, sinta-se à vontade para responder a este e-mail.</p>
+    //       <p style="font-size: 12px; color: #777;">Atenciosamente,<br>Equipe de Suporte</p>
+    //     </div>
+    //   `;
+
+        const emailContent = `
+          Código da Denúncia: ${denuncia.id}
+          Data da Denúncia: ${new Date(denuncia.data_criacao).toLocaleString()}
+          Denúncia: ${denuncia.mensagem}
+          Resposta: ${respostaParaEmail}
+        `;
+    
+        const response = await apiClient.post("/api/enviarEmail", {
+          to: denuncia.denunciante.email,
+          subject: `Resposta à denúncia: ${denuncia.assunto}`,
+          text: emailContent,
+        });
+    
+        if (response.status === 200) {
+          alert("Email enviado com sucesso!");
+        } else {
+          alert("Erro ao enviar o email.");
+        }
+      }
 
   const formatarData = (data: string | Date) => {
     const options: Intl.DateTimeFormatOptions = {
@@ -197,10 +249,16 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
                 ></textarea>
                 
                 <button 
-                onClick={handleEnviarResposta} 
-                className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow"
+                    onClick={handleEnviarResposta} 
+                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow"
+                    >
+                    Enviar Resposta
+                </button>
+                <button 
+                onClick={handleEnviarEmail} 
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow m-2"
                 >
-                Enviar Resposta
+                    Enviar Email
                 </button>
             </div>
 
