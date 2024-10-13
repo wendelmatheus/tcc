@@ -49,7 +49,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
         await repositorioDenuncia.save(salvarDenuncia);
 
-        res.status(200).json({ message: `Denúncia cadastrada com sucesso! Código da denúncia: ${idDenuncia}` });
+        return res.status(200).json({ message: `Denúncia cadastrada com sucesso! Código da denúncia: ${idDenuncia}`, id: idDenuncia });
       } catch (erro) {
         console.error(erro);
         res.status(500).end();
