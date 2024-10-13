@@ -1,9 +1,18 @@
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import { getAPIClient } from "./api/axios";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
-import { CldImage } from "next-cloudinary";
+import Link from "next/link";
+
+// Define a interface para o tipo de denuncia
+interface Denuncia {
+  id: string;
+  assunto: string;
+  mensagem: string;
+  status: string;
+  data_criacao: Date; // ou string, dependendo de como você está tratando a data
+}
 
 const navigation = [
   { name: 'Home', href: '/', emoji: "🏠" },
@@ -11,25 +20,43 @@ const navigation = [
   { name: 'Ver denúncias', href: '/ver-denuncias', emoji: '🔍' }
 ];
 
-const cards = [
-  { titulo: "Overview", conteudo: "Content goes here..." },
-  { titulo: "Analytics", conteudo: "Content goes here..." },
-  { titulo: "Reports", conteudo: "Content goes here..." }
-];
-
-export default function Dashboard() {
-  
-  const { user, signOut } = useContext(AuthContext)
+export default function VerDenuncias() {
+  const { user, signOut } = useContext(AuthContext);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+
+  const [denuncias, setDenuncias] = useState<Denuncia[]>([]);
+
+  async function fetchDenuncias() {
+    const apiClient = getAPIClient();
+
+    const response = await apiClient.get("/api/verDenuncias");
+    setDenuncias(response.data);
+  }
+
+  useEffect(() => {
+    fetchDenuncias();
+  }, []);
 
   async function handleClickSair() {
     await signOut();
   }
 
+  const formatarData = (data: string | Date) => {
+    const options: Intl.DateTimeFormatOptions = {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false // Para evitar o formato AM/PM
+    };
+    return new Date(data).toLocaleString('pt-BR', options);
+  };
+
   return (
     <div className="flex h-screen bg-gray-100">
-
       {/* Sidebar */}
       <div
         className={`fixed inset-y-0 left-0 w-64 bg-gray-700 text-white transition-transform transform ${
@@ -61,7 +88,6 @@ export default function Dashboard() {
 
       {/* Main content */}
       <div className="flex-1 flex flex-col">
-
         {/* Header */}
         <header className="bg-gray-800 shadow-md h-16 flex items-center justify-between px-6 md:px-8">
           <div className="flex items-center">
@@ -71,6 +97,9 @@ export default function Dashboard() {
             >
               ☰
             </button>
+            <div className="h-16 flex items-center justify-between bg-gray-800 shadow-md px-4">
+                <h2 className="text-xl font-semibold text-white ml-4 md:ml-0">Denúncias cadastradas</h2>
+            </div>
             {/* Mostrar "Dashboard" apenas quando a sidebar está escondida */}
             {!isSidebarOpen && (
               <h2 className="text-xl font-semibold text-white ml-4 md:ml-0 md:hidden">Dashboard</h2>
@@ -115,11 +144,15 @@ export default function Dashboard() {
         {/* Content */}
         <main className="flex-1 p-6 bg-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {cards.map((item) => (
-              <div className="bg-white p-4 rounded-md shadow-md">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">{item.titulo}</h3>
-                <p className="text-gray-600">{item.conteudo}</p>
-              </div>
+            {denuncias.map((denuncia) => (
+              <Link key={denuncia.id} href={`/responder-denuncia?id=${denuncia.id}`}>
+                <div className="bg-white p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg transition-shadow h-48 flex flex-col justify-between">
+                  <h3 className="text-lg font-semibold text-gray-700">Assunto: {denuncia.assunto}</h3>
+                  <p className="text-gray-600 truncate">{denuncia.mensagem}</p> {/* Limita o texto e coloca "..." */}
+                  <p className="text-gray-500">Status: {denuncia.status}</p>
+                  <p className="text-gray-500">Data: {formatarData(denuncia.data_criacao)}</p>
+                </div>
+              </Link>
             ))}
           </div>
         </main>
