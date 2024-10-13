@@ -98,7 +98,7 @@ export default function VerDenuncias() {
               ☰
             </button>
             <div className="h-16 flex items-center justify-between bg-gray-800 shadow-md px-4">
-                <h2 className="text-xl font-semibold text-white ml-4 md:ml-0">Denúncias cadastradas</h2>
+                <h2 className="text-xl font-semibold text-white ml-4 md:ml-0">Denúncias</h2>
             </div>
             {/* Mostrar "Dashboard" apenas quando a sidebar está escondida */}
             {!isSidebarOpen && (
@@ -143,19 +143,44 @@ export default function VerDenuncias() {
 
         {/* Content */}
         <main className="flex-1 p-6 bg-gray-100">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {denuncias.map((denuncia) => (
-              <Link key={denuncia.id} href={`/responder-denuncia?id=${denuncia.id}`}>
-                <div className="bg-white p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg transition-shadow h-48 flex flex-col justify-between">
-                  <h3 className="text-lg font-semibold text-gray-700">Assunto: {denuncia.assunto}</h3>
-                  <p className="text-gray-600 truncate">{denuncia.mensagem}</p> {/* Limita o texto e coloca "..." */}
-                  <p className="text-gray-500">Status: {denuncia.status}</p>
-                  <p className="text-gray-500">Data: {formatarData(denuncia.data_criacao)}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </main>
+  {/* Seção para Denúncias Recebidas */}
+  <section className="mb-10">
+    <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-gray-300 pb-2">Denúncias Recebidas</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {denuncias
+        .filter(denuncia => denuncia.status === "Recebido")
+        .map((denuncia) => (
+          <Link key={denuncia.id} href={`/responder-denuncia?id=${denuncia.id}`}>
+            <div className="bg-white p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg transition-shadow h-48 flex flex-col justify-between">
+              <h3 className="text-lg font-semibold text-gray-700">Assunto: {denuncia.assunto}</h3>
+              <p className="text-gray-600 truncate">{denuncia.mensagem}</p>
+              <p className="text-gray-500">Status: {denuncia.status}</p>
+              <p className="text-gray-500">Data: {formatarData(denuncia.data_criacao)}</p>
+            </div>
+          </Link>
+        ))}
+    </div>
+  </section>
+
+  {/* Seção para Denúncias Respondidas */}
+  <section>
+    <h2 className="text-2xl font-bold text-gray-800 mb-4 border-b-2 border-gray-300 pb-2">Denúncias Respondidas</h2>
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {denuncias
+        .filter(denuncia => denuncia.status === "Respondida")
+        .map((denuncia) => (
+          <Link key={denuncia.id} href={`/responder-denuncia?id=${denuncia.id}`}>
+            <div className="bg-white p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg transition-shadow h-48 flex flex-col justify-between">
+              <h3 className="text-lg font-semibold text-gray-700">{denuncia.assunto}</h3>
+              <p className="text-gray-600 truncate">{denuncia.mensagem}</p>
+              <p className="text-gray-500">Status: {denuncia.status}</p>
+              <p className="text-gray-500">Data: {formatarData(denuncia.data_criacao)}</p>
+            </div>
+          </Link>
+        ))}
+    </div>
+  </section>
+</main>
       </div>
     </div>
   );
