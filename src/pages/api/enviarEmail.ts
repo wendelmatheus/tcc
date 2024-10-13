@@ -2,25 +2,25 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { to, subject, text } = req.body;
-  if (!to || !subject || !text) {
+  const { to, subject, html } = req.body; // Use "html" para conteúdo em HTML
+  if (!to || !subject || !html) {
     return res.status(400).json({ message: 'Parâmetros de email incompletos' });
   }
 
   const transporter = nodemailer.createTransport({
-    service: 'gmail', 
+    service: 'gmail',
     auth: {
-      user: process.env.EMAIL_USER, 
-      pass: process.env.EMAIL_PASSWORD, 
+      user: process.env.EMAIL_USER,
+      pass: process.env.EMAIL_PASSWORD,
     },
   });
 
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_USER, 
+      from: process.env.EMAIL_USER,
       to,
-      subject, 
-      text,
+      subject,
+      html, // Enviando o conteúdo HTML
     });
 
     res.status(200).json({ message: 'Email enviado com sucesso!' });

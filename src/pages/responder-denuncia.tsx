@@ -55,37 +55,51 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
           alert("Erro: Resposta não preenchida!");
           return;
         }
-    
-    //     const emailContent = `
-    //     <div style="font-family: Arial, sans-serif; line-height: 1.5;">
-    //       <h2 style="color: #333;">Resposta à sua denúncia</h2>
-    //       <p>Olá <strong>${denuncia.denunciante.nome}</strong>,</p>
-    //       <p>Abaixo estão os detalhes da sua denúncia e nossa resposta:</p>
-    //       <hr style="border: none; border-bottom: 1px solid #ddd; margin: 20px 0;">
-          
-    //       <p><strong>Código da Denúncia:</strong> ${denuncia.id}</p>
-    //       <p><strong>Data da Denúncia:</strong> ${new Date(denuncia.data_criacao).toLocaleString()}</p>
-    //       <p><strong>Assunto:</strong> ${denuncia.assunto}</p>
-    //       <p><strong>Denúncia:</strong> ${denuncia.mensagem}</p>
-    //       <p><strong>Resposta:</strong> ${respostaParaEmail}</p>
-          
-    //       <hr style="border: none; border-bottom: 1px solid #ddd; margin: 20px 0;">
-    //       <p style="font-size: 12px; color: #777;">Se você tiver mais perguntas, sinta-se à vontade para responder a este e-mail.</p>
-    //       <p style="font-size: 12px; color: #777;">Atenciosamente,<br>Equipe de Suporte</p>
-    //     </div>
-    //   `;
 
         const emailContent = `
-          Código da Denúncia: ${denuncia.id}
-          Data da Denúncia: ${new Date(denuncia.data_criacao).toLocaleString()}
-          Denúncia: ${denuncia.mensagem}
-          Resposta: ${respostaParaEmail}
-        `;
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #e0e0e0; border-radius: 10px; background-color: #f9f9f9;">
+          <h2 style="color: #3b82f6; text-align: center;">Resposta à sua Denúncia</h2>
+          
+          <p style="font-size: 16px; color: #333;">Olá, <strong>${denuncia.denunciante.nome}</strong>!</p>
+          <p style="font-size: 16px; color: #333;">Recebemos a sua denúncia e aqui está a nossa resposta:</p>
+          
+<div style="padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px;">
+  <div style="padding: 8px 0;">
+    <p style="margin: 0; font-weight: bold;">Código da Denúncia</p>
+    <p style="margin: 4px 0;">${denuncia.id}</p>
+  </div>  
+
+  <div style="padding: 8px 0;">
+    <p style="margin: 0; font-weight: bold;">Data da Denúncia</p>
+    <p style="margin: 4px 0;">${formatarData(denuncia.data_criacao)}</p>
+  </div>  
+
+  <div style="padding: 8px 0;">
+    <p style="margin: 0; font-weight: bold;">Assunto</p>
+    <p style="margin: 4px 0;">${denuncia.assunto}</p>
+  </div>  
+
+  <div style="padding: 8px 0;">
+    <p style="margin: 0; font-weight: bold;">Mensagem</p>
+    <p style="margin: 4px 0;">${denuncia.mensagem}</p>
+  </div>  
+
+  <div style="padding: 8px 0;">
+    <p style="margin: 0; font-weight: bold;">Resposta</p>
+    <p style="margin: 4px 0;">${respostaParaEmail}</p>
+  </div>  
+</div>
+          
+          <p style="font-size: 14px; color: #777; text-align: center;">Caso tenha dúvidas ou precise de mais informações, sinta-se à vontade para nos responder.</p>
+          
+          <p style="font-size: 14px; color: #777; text-align: center;">Atenciosamente,<br>Equipe Pet Denuncie</p>
+        </div>
+      `;
     
         const response = await apiClient.post("/api/enviarEmail", {
           to: denuncia.denunciante.email,
           subject: `Resposta à denúncia: ${denuncia.assunto}`,
-          text: emailContent,
+          html: emailContent,
         });
     
         if (response.status === 200) {
