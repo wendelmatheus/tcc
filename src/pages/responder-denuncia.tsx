@@ -63,32 +63,32 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
           <p style="font-size: 16px; color: #333;">Olá, <strong>${denuncia.denunciante.nome}</strong>!</p>
           <p style="font-size: 16px; color: #333;">Recebemos a sua denúncia e aqui está a nossa resposta:</p>
           
-<div style="padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px;">
-  <div style="padding: 8px 0;">
-    <p style="margin: 0; font-weight: bold;">Código da Denúncia</p>
-    <p style="margin: 4px 0;">${denuncia.id}</p>
-  </div>  
+          <div style="padding: 15px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 20px;">
+            <div style="padding: 8px 0;">
+              <p style="margin: 0; font-weight: bold;">Código da Denúncia</p>
+              <p style="margin: 4px 0;">${denuncia.id}</p>
+            </div>  
 
-  <div style="padding: 8px 0;">
-    <p style="margin: 0; font-weight: bold;">Data da Denúncia</p>
-    <p style="margin: 4px 0;">${formatarData(denuncia.data_criacao)}</p>
-  </div>  
+            <div style="padding: 8px 0;">
+              <p style="margin: 0; font-weight: bold;">Data da Denúncia</p>
+              <p style="margin: 4px 0;">${formatarData(denuncia.data_criacao)}</p>
+            </div>  
 
-  <div style="padding: 8px 0;">
-    <p style="margin: 0; font-weight: bold;">Assunto</p>
-    <p style="margin: 4px 0;">${denuncia.assunto}</p>
-  </div>  
+            <div style="padding: 8px 0;">
+              <p style="margin: 0; font-weight: bold;">Assunto</p>
+              <p style="margin: 4px 0;">${denuncia.assunto}</p>
+            </div>  
 
-  <div style="padding: 8px 0;">
-    <p style="margin: 0; font-weight: bold;">Mensagem</p>
-    <p style="margin: 4px 0;">${denuncia.mensagem}</p>
-  </div>  
+            <div style="padding: 8px 0;">
+              <p style="margin: 0; font-weight: bold;">Mensagem</p>
+              <p style="margin: 4px 0;">${denuncia.mensagem}</p>
+            </div>  
 
-  <div style="padding: 8px 0;">
-    <p style="margin: 0; font-weight: bold;">Resposta</p>
-    <p style="margin: 4px 0;">${respostaParaEmail}</p>
-  </div>  
-</div>
+            <div style="padding: 8px 0;">
+              <p style="margin: 0; font-weight: bold;">Resposta</p>
+              <p style="margin: 4px 0;">${respostaParaEmail}</p>
+            </div>  
+          </div>
           
           <p style="font-size: 14px; color: #777; text-align: center;">Caso tenha dúvidas ou precise de mais informações, sinta-se à vontade para nos responder.</p>
           

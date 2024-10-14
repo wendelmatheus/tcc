@@ -12,6 +12,7 @@ const navigation = [
   { name: 'Sobre', href: '/sobre' },
   { name: 'Blog', href: '/blog' },
   { name: 'Faça sua denúncia', href: '/faca-sua-denuncia' },
+  { name: 'Denúncias', href: '/denuncias' },
 ];
 
 function classNames(...classes: string[]) {
