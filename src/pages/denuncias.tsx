@@ -18,7 +18,7 @@ export default function Denuncias() {
   const [currentPage, setCurrentPage] = useState(1);
   const router = useRouter();
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 9;
 
   // Função para buscar denúncias do banco
   async function fetchDenuncias() {
@@ -106,7 +106,7 @@ export default function Denuncias() {
           <div className="flex justify-center mt-6 space-x-4">
             <button
               onClick={handlePreviousPage}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-400"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-200 disabled:text-gray-600"
               disabled={currentPage === 1}
             >
               Anterior
@@ -114,7 +114,7 @@ export default function Denuncias() {
             <span className="text-white">{`Página ${currentPage} de ${totalPages}`}</span>
             <button
               onClick={handleNextPage}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-400"
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-200 disabled:text-gray-600"
               disabled={currentPage === totalPages}
             >
               Próxima
