@@ -41,7 +41,7 @@ export default function Report() {
         })
         .then((result) => {
           console.log("Código da denúncia:", result.id);
-          setCodigoDenuncia(result.id); // Armazena o código da denúncia no estado
+          setCodigoDenuncia(result.id);
         })
         .catch((error) => {
           console.error("Erro ao registrar denúncia:", error);
@@ -58,16 +58,14 @@ export default function Report() {
       <div className="bg-gray-700 min-h-screen flex flex-col items-center justify-center py-10 px-4">
         <h1 className="text-3xl font-bold text-white mb-6">Faça sua Denúncia</h1>
         <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-lg space-y-4">
-          {/* Exibe o código da denúncia se estiver presente, estilizado como um input */}
+
           {codigoDenuncia && (
             <div>
               <label className="block text-white mb-1" htmlFor="name">Código da denúncia</label>
               <span><strong>{codigoDenuncia}</strong></span>
             </div>
-            // <div className="bg-gray-200 p-2 rounded text-gray-700">
-            //   <span>Código da Denúncia: <strong>{codigoDenuncia}</strong></span>
-            // </div>
           )}
+          
           <div>
             <label className="block text-white mb-1" htmlFor="name">Nome</label>
             <input 

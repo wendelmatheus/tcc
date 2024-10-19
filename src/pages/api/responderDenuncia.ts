@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { AppDataSource } from '../../../db/controller/conexaoBanco';
 import { Denuncia } from '../../../db/entities/Denuncia';
 import { verify } from 'jsonwebtoken';
-import { autenticar } from '@/controller/utilitarios/autenticador';
+import { autenticar } from '@/controller/utilitarios/utils';
 
 function verificarDados(resposta: string | undefined, idDenuncia: string | undefined) {
   return (

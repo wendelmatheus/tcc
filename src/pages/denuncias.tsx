@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Navbar from "@/view/components/navbar";
+import { Spinner } from '@/view/components/spinner';
 
-// Define a interface para o tipo de denúncia
 interface Denuncia {
   id: string;
   assunto: string;
@@ -16,25 +16,25 @@ export default function Denuncias() {
   const [filteredDenuncias, setFilteredDenuncias] = useState<Denuncia[]>([]);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   const itemsPerPage = 9;
 
-  // Função para buscar denúncias do banco
   async function fetchDenuncias() {
+    setLoading(true)
     const response = await fetch('/api/verDenuncias');
     const data = await response.json();
 
-    // Ordenar as denúncias pela data de criação, da mais recente para a mais antiga
     const sortedData = data.sort((a: Denuncia, b: Denuncia) => {
       return new Date(b.data_criacao).getTime() - new Date(a.data_criacao).getTime();
     });
 
     setDenuncias(sortedData);
     setFilteredDenuncias(sortedData);
+    setLoading(false)
   }
 
-  // Função de busca por código
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSearch(e.target.value);
     if (e.target.value === '') {
@@ -47,7 +47,6 @@ export default function Denuncias() {
     }
   }
 
-  // Paginação
   const totalPages = Math.ceil(filteredDenuncias.length / itemsPerPage);
   const paginatedDenuncias = filteredDenuncias.slice(
     (currentPage - 1) * itemsPerPage, 
@@ -58,7 +57,6 @@ export default function Denuncias() {
     router.push(`/denuncia?id=${id}`);
   }
 
-  // Controle da paginação
   function handlePreviousPage() {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -80,7 +78,6 @@ export default function Denuncias() {
       <Navbar />
       <main className="container mx-auto p-6">
 
-        {/* Barra de busca */}
         <div className="flex justify-center mb-6">
           <input
             type="text"
@@ -91,42 +88,45 @@ export default function Denuncias() {
           />
         </div>
 
-        {/* Lista de denúncias */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-          {paginatedDenuncias.map((denuncia) => (
-            <div
-              key={denuncia.id}
-              className="bg-gray-200 p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg transition-shadow h-48 flex flex-col justify-between"
-              onClick={() => handleClickDenuncia(denuncia.id)}
-            >
-              <h3 className="text-lg font-semibold text-gray-700">{denuncia.assunto}</h3>
-              <p className="text-gray-600 truncate">{denuncia.mensagem}</p> {/* Limita o texto e coloca "..." */}
-              <p className="text-gray-500">Status: {denuncia.status}</p>
-              <p className="text-gray-500">Data: {new Date(denuncia.data_criacao).toLocaleString('pt-BR')}</p>
+        {loading 
+          ? <Spinner />
+          : <>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {paginatedDenuncias.map((denuncia) => (
+                <div
+                  key={denuncia.id}
+                  className="bg-gray-200 p-4 rounded-md shadow-md cursor-pointer hover:shadow-lg transition-shadow h-48 flex flex-col justify-between"
+                  onClick={() => handleClickDenuncia(denuncia.id)}
+                >
+                  <h3 className="text-lg font-semibold text-gray-700">{denuncia.assunto}</h3>
+                  <p className="text-gray-600 truncate">{denuncia.mensagem}</p> {/* Limita o texto e coloca "..." */}
+                  <p className="text-gray-500">Status: {denuncia.status}</p>
+                  <p className="text-gray-500">Data: {new Date(denuncia.data_criacao).toLocaleString('pt-BR')}</p>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
 
-        {/* Paginação */}
-        {totalPages > 1 && (
-          <div className="flex justify-center mt-6 space-x-4">
-            <button
-              onClick={handlePreviousPage}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-200 disabled:text-gray-600"
-              disabled={currentPage === 1}
-            >
-              Anterior
-            </button>
-            <span className="text-white">{`Página ${currentPage} de ${totalPages}`}</span>
-            <button
-              onClick={handleNextPage}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-200 disabled:text-gray-600"
-              disabled={currentPage === totalPages}
-            >
-              Próxima
-            </button>
-          </div>
-        )}
+            {totalPages > 1 && (
+              <div className="flex justify-center mt-6 space-x-4">
+                <button
+                  onClick={handlePreviousPage}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-200 disabled:text-gray-600"
+                  disabled={currentPage === 1}
+                >
+                  Anterior
+                </button>
+                <span className="text-white">{`Página ${currentPage} de ${totalPages}`}</span>
+                <button
+                  onClick={handleNextPage}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-200 disabled:text-gray-600"
+                  disabled={currentPage === totalPages}
+                >
+                  Próxima
+                </button>
+              </div>
+            )}
+          </>
+        }
       </main>
     </div>
   );

@@ -25,16 +25,12 @@ export default function Dashboard() {
   return (
     <div className="flex h-screen bg-gray-100">
 
-      {/* Sidebar */}
       <SidebarDashboard />
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col">
 
-        {/* Header */}
         <HeaderDashboard />
 
-        {/* Content */}
         <main className="flex-1 p-6 bg-gray-100">
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {cards.map((item) => (

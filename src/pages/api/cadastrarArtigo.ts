@@ -1,8 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { AppDataSource } from '../../../db/controller/conexaoBanco';
-import { Denuncia } from '../../../db/entities/Denuncia';
 import { Artigo } from '../../../db/entities/Artigo';
-import { autenticar } from '@/controller/utilitarios/autenticador';
+import { autenticar } from '@/controller/utilitarios/utils';
 
 function verificarDados(titulo: string | undefined, texto: string | undefined) {
   return (

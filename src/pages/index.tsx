@@ -6,7 +6,6 @@ export default function Home() {
     <>
       <Navbar />
       <div className="bg-gray-700 min-h-screen flex flex-col">
-        {/* Seção Título e Slogan */}
         <section id="home" className="flex flex-col items-center justify-center min-h-screen py-10 px-4 text-center">
           <h1 className="text-5xl font-bold text-white">Plataforma de Denúncia de Maus-Tratos aos Animais</h1>
           <p className="mt-6 text-xl text-gray-300 max-w-3xl mx-auto">
@@ -17,7 +16,6 @@ export default function Home() {
           </a>
         </section>
 
-        {/* Seção Como Funciona */}
         <section id="how-it-works" className="flex flex-col items-center justify-center min-h-screen py-10 px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-6">Como Funciona</h2>
           <div className="text-gray-300 max-w-3xl mx-auto space-y-4">
@@ -31,7 +29,6 @@ export default function Home() {
           </a>
         </section>
 
-        {/* Seção Benefícios */}
         <section id="benefits" className="flex flex-col items-center justify-center min-h-screen py-10 px-4 text-center">
           <h2 className="text-3xl font-bold text-white mb-6">Benefícios</h2>
           <ul className="text-gray-300 max-w-3xl mx-auto space-y-2 list-disc list-inside">
@@ -40,6 +37,7 @@ export default function Home() {
             <li>Resposta rápida das autoridades</li>
             <li>Contribuição para a proteção e bem-estar animal</li>
           </ul>
+          
           <Link href="/faca-sua-denuncia">          
             <button 
                 className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition-all duration-300">

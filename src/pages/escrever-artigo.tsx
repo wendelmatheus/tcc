@@ -35,15 +35,13 @@ export default function Dashboard() {
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+
       <SidebarDashboard />
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
+
         <HeaderDashboard titulo="Artigos"/>
 
-        {/* Content */}
         <main className="flex-1 p-6 bg-gray-100">
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-gray-700 p-2">Escrever novo artigo</h3>

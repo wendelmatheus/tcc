@@ -1,4 +1,4 @@
-import { autenticar } from '@/controller/utilitarios/autenticador';
+import { autenticar } from '@/controller/utilitarios/utils';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 
@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return;
   }
 
-  const { to, subject, html } = req.body; // Use "html" para conteúdo em HTML
+  const { to, subject, html } = req.body;
   if (!to || !subject || !html) {
     return res.status(400).json({ message: 'Parâmetros de email incompletos' });
   }
@@ -27,7 +27,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       from: process.env.EMAIL_USER,
       to,
       subject,
-      html, // Enviando o conteúdo HTML
+      html,
     });
 
     res.status(200).json({ message: 'Email enviado com sucesso!' });

@@ -3,9 +3,8 @@ import { AppDataSource } from '../../../../db/controller/conexaoBanco';
 import { Denuncia } from '../../../../db/entities/Denuncia';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query; // Extraindo o id da query
+  const { id } = req.query;
 
-  // Verifica se o id é uma string
   if (typeof id !== 'string') {
     return res.status(400).json({ message: 'ID inválido' });
   }
@@ -17,7 +16,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const repositorio = conexao.getRepository(Denuncia);
       const denuncia = await repositorio.findOne({
         where: { id },
-        relations: ["denunciante"], // Incluindo a relação com o denunciante
+        relations: ["denunciante"],
       });
 
       if (!denuncia) {

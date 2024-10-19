@@ -3,9 +3,8 @@ import { AppDataSource } from '../../../../db/controller/conexaoBanco';
 import { Artigo } from '../../../../db/entities/Artigo';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query; // Extraindo o id da query
+  const { id } = req.query;
 
-  // Verifica se o id é uma string
   if (typeof id !== 'string') {
     return res.status(400).json({ message: 'ID inválido' });
   }

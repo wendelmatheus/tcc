@@ -1,26 +1,25 @@
 import { GetServerSideProps } from "next";
 import { parseCookies } from "nookies";
 import { getAPIClient } from "./api/axios";
-import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "@/contexts/AuthContext";
-import NavbarDashboard from "@/view/components/navbarDashboard";
+import { useState } from "react";
 import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
+import { formatarData } from "@/controller/utilitarios/utils";
 
 interface Denunciante {
-    nome: string;
-    email: string;
-  }
+  nome: string;
+  email: string;
+}
   
-  interface Denuncia {
-    id: string;
-    assunto: string;
-    mensagem: string;
-    status: string;
-    data_criacao: string; // ou Date, dependendo de como você está tratando a data
-    resposta: string;
-    denunciante: Denunciante; // Alterado para incluir o objeto denunciante
-  }
+interface Denuncia {
+  id: string;
+  assunto: string;
+  mensagem: string;
+  status: string;
+  data_criacao: string;
+  resposta: string;
+  denunciante: Denunciante;
+}
 
 export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) {
   
@@ -41,11 +40,9 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
     }
   }
 
-    // Função para enviar o email ao denunciante
     async function handleEnviarEmail() {
         const apiClient = getAPIClient();
         
-        // Verifica se existe uma resposta válida
         const respostaParaEmail = resposta || denuncia.resposta;
     
         if (!respostaParaEmail) {
@@ -104,64 +101,36 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
         } else {
           alert("Erro ao enviar o email.");
         }
-      }
+    }
 
-  const formatarData = (data: string | Date) => {
-    const options: Intl.DateTimeFormatOptions = {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false // Para evitar o formato AM/PM
-    };
-    return new Date(data).toLocaleString('pt-BR', options);
-  };
+  const data = [
+    { titulo: 'Código', subtitulo: `${denuncia.id}` },
+    { titulo: 'Nome do Denunciante', subtitulo: `${denuncia.denunciante.nome}` },
+    { titulo: 'E-mail', subtitulo: `${denuncia.denunciante.email}` },
+    { titulo: 'Assunto', subtitulo: `${denuncia.assunto}` },
+    { titulo: 'Mensagem', subtitulo: `${denuncia.mensagem}` },
+    { titulo: 'Status', subtitulo: `${denuncia.status}` },
+    { titulo: 'Data', subtitulo: `${denuncia.data_criacao}` }
+  ];
 
   return (
     <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
+
       <SidebarDashboard />
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col">
-        {/* Header */}
+
         <HeaderDashboard titulo="Responder" />
 
-        {/* Content */}
         <main className="flex-1 p-6 bg-gray-100">
         <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-gray-700 p-2">Detalhes da Denúncia</h3>
-            <div className="p-2">
-                <p className="text-gray-800"><strong>Código</strong></p>
-                <p className="text-gray-800">{denuncia.id}</p>
-            </div>
-            <div className="p-2">
-                <p className="text-gray-800"><strong>Nome do Denunciante</strong></p>
-                <p className="text-gray-800">{denuncia.denunciante.nome}</p>
-            </div>
-            <div className="p-2">
-                <p className="text-gray-800"><strong>E-mail</strong></p>
-                <p className="text-gray-800">{denuncia.denunciante.email}</p>
-            </div>
-
-            <div className="p-2">
-                <p className="text-gray-800"><strong>Assunto</strong></p>
-                <p className="text-gray-800">{denuncia.assunto}</p>
-            </div>
-            <div className="p-2">
-                <p className="text-gray-800"><strong>Mensagem</strong></p>
-                <p className="text-gray-800">{denuncia.mensagem}</p>
-            </div>
-            <div className="p-2">
-                <p className="text-gray-800"><strong>Status</strong></p>
-                <p className="text-gray-800">{denuncia.status}</p>
-            </div>
-            <div className="p-2">
-                <p className="text-gray-800"><strong>Data</strong></p>
-                <p className="text-gray-800">{formatarData(denuncia.data_criacao)}</p>
-            </div>
+            {data.map((item) => (
+              <div className="p-2">
+                <p className="text-gray-800"><strong>{item.titulo}</strong></p>
+                <p className="text-gray-800">{item.subtitulo}</p>
+              </div>
+            ))}
             <div className="p-2">
             <h3 className="mt-4 text-lg font-semibold text-gray-700">Responder Denúncia</h3>
                 <textarea

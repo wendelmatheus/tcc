@@ -47,12 +47,12 @@ export default function HeaderDashboard({ titulo }: HeaderDashboardProps) {
                 <p className="text-xs text-gray-500">{user?.email}</p>
               </div>
               <div className="border-t border-gray-200 mt-2"></div>
-              <button
+              {/* <button
                 className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200"
                 onClick={() => {}}
               >
                 Mudar foto
-              </button>
+              </button> */}
               <button
                 className="w-full text-left px-4 py-2 text-sm text-gray-800 hover:bg-gray-200"
                 onClick={handleClickSair}

@@ -45,7 +45,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, []);
 
   async function signIn(email: string, senha: string, onUnauthorized: () => void, onNotFound: () => void) {
-    // chamada para a api, enviar email e senha do usuário, trazer o token e salvar (cookies)
+
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
 

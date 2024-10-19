@@ -1,6 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Navbar from "@/view/components/navbar";
+import { formatarData } from '@/controller/utilitarios/utils';
 
 interface Artigo {
     id: string;
@@ -10,9 +11,7 @@ interface Artigo {
 }
 
 export default function ArtigoPage({ artigo }: { artigo: Artigo | null }) {
-    const router = useRouter();
 
-    // Exibir mensagem se o artigo não for encontrado
     if (!artigo) {
         return (
             <div className="bg-gray-700 min-h-screen">
@@ -27,20 +26,6 @@ export default function ArtigoPage({ artigo }: { artigo: Artigo | null }) {
         );
     }
 
-    const formatarData = (data: string | Date) => {
-        const options: Intl.DateTimeFormatOptions = {
-            day: '2-digit',
-            month: '2-digit',
-            year: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false // Para evitar o formato AM/PM
-        };
-        return new Date(data).toLocaleString('pt-BR', options);
-    };
-
-    // Dividir o texto em parágrafos com base nas quebras de linha
     const parrafos = artigo.texto.split('\n');
 
     return (
@@ -55,9 +40,8 @@ export default function ArtigoPage({ artigo }: { artigo: Artigo | null }) {
                     </div>
 
                     <div className="text-gray-600 p-2">
-                        {/* Mapear cada parágrafo para um elemento <p> com margem inferior */}
                         {parrafos.map((paragrafo, index) => (
-                            <p key={index} className="mb-4">{paragrafo}</p> // Adicionando margem inferior
+                            <p key={index} className="mb-4">{paragrafo}</p> 
                         ))}
                     </div>
                 </div>
@@ -71,19 +55,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     const response = await fetch(`http://localhost:3000/api/verArtigo/${id}`);
     
-    // Verifica se a resposta da API foi bem-sucedida
     if (!response.ok) {
         return {
-            props: { artigo: null }, // Passa null se a resposta não for ok
+            props: { artigo: null },
         };
     }
 
     const artigo = await response.json();
 
-    // Verifica se o artigo não foi encontrado
     if (!artigo) {
         return {
-            props: { artigo: null }, // Passa null para o componente
+            props: { artigo: null },
         };
     }
 
