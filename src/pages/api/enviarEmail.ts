@@ -1,7 +1,14 @@
+import { autenticar } from '@/controller/utilitarios/autenticador';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import nodemailer from 'nodemailer';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+  const usuario = autenticar(req, res);
+  if (!usuario) {
+    return;
+  }
+
   const { to, subject, html } = req.body; // Use "html" para conteúdo em HTML
   if (!to || !subject || !html) {
     return res.status(400).json({ message: 'Parâmetros de email incompletos' });

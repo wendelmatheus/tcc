@@ -1,7 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { AppDataSource } from '../../../db/controller/conexaoBanco';
 import { Denuncia } from '../../../db/entities/Denuncia';
-import { Resend } from 'resend';
+import { verify } from 'jsonwebtoken';
+import { autenticar } from '@/controller/utilitarios/autenticador';
 
 function verificarDados(resposta: string | undefined, idDenuncia: string | undefined) {
   return (
@@ -10,7 +11,27 @@ function verificarDados(resposta: string | undefined, idDenuncia: string | undef
   );
 }
 
+function verificarToken(req: NextApiRequest) {
+  const token = req.headers.authorization?.split(' ')[1];
+  if (!token) {
+    return null;
+  }
+  
+  try {
+    const secret = process.env.CHAVE_SECRETA;
+    return verify(token, secret ?? "");
+  } catch (error) {
+    return null; 
+  }
+}
+
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+  const usuario = autenticar(req, res);
+  if (!usuario) {
+    return;
+  }
+
   const { idDenuncia, resposta } = req.body;
 
   const conexao = await AppDataSource;

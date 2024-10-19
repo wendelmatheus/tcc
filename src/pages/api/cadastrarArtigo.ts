@@ -2,6 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { AppDataSource } from '../../../db/controller/conexaoBanco';
 import { Denuncia } from '../../../db/entities/Denuncia';
 import { Artigo } from '../../../db/entities/Artigo';
+import { autenticar } from '@/controller/utilitarios/autenticador';
 
 function verificarDados(titulo: string | undefined, texto: string | undefined) {
   return (
@@ -11,6 +12,12 @@ function verificarDados(titulo: string | undefined, texto: string | undefined) {
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+  const usuario = autenticar(req, res);
+  if (!usuario) {
+    return;
+  }
+
   const { titulo, texto } = req.body;
 
   const conexao = await AppDataSource;
