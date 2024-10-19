@@ -24,8 +24,14 @@ export default function Denuncias() {
   async function fetchDenuncias() {
     const response = await fetch('/api/verDenuncias');
     const data = await response.json();
-    setDenuncias(data);
-    setFilteredDenuncias(data);
+
+    // Ordenar as denúncias pela data de criação, da mais recente para a mais antiga
+    const sortedData = data.sort((a: Denuncia, b: Denuncia) => {
+      return new Date(b.data_criacao).getTime() - new Date(a.data_criacao).getTime();
+    });
+
+    setDenuncias(sortedData);
+    setFilteredDenuncias(sortedData);
   }
 
   // Função de busca por código
