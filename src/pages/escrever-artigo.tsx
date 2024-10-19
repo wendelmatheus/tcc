@@ -3,7 +3,6 @@ import { parseCookies } from "nookies";
 import { getAPIClient } from "./api/axios";
 import { useContext, useState } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
-import { CldImage } from "next-cloudinary";
 import NavbarDashboard from "@/view/components/navbarDashboard";
 import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
@@ -12,12 +11,6 @@ const navigation = [
   { name: 'Home', href: '/', emoji: "🏠" },
   { name: 'Escrever artigo', href: '#', emoji: '📝' },
   { name: 'Ver denúncias', href: '/ver-denuncias', emoji: '🔍' }
-];
-
-const cards = [
-  { titulo: "Overview", conteudo: "Content goes here..." },
-  { titulo: "Analytics", conteudo: "Content goes here..." },
-  { titulo: "Reports", conteudo: "Content goes here..." }
 ];
 
 export default function Dashboard() {
@@ -32,18 +25,11 @@ export default function Dashboard() {
       <div className="flex-1 flex flex-col">
 
         {/* Header */}
-        <HeaderDashboard />
+        <HeaderDashboard titulo="Artigos"/>
 
         {/* Content */}
         <main className="flex-1 p-6 bg-gray-100">
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {cards.map((item) => (
-              <div className="bg-white p-4 rounded-md shadow-md">
-                <h3 className="text-lg font-semibold text-gray-700 mb-4">{item.titulo}</h3>
-                <p className="text-gray-600">{item.conteudo}</p>
-              </div>
-            ))}
-          </div>
+            <p>hello world</p>
         </main>
       </div>
     </div>

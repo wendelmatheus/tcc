@@ -117,6 +117,13 @@ export default function Report() {
             </textarea>
           </div>
           <div className="text-center">
+            <div className="p-4">
+              <button
+                className="text-blue-500 underline"
+                onClick={() => {setNome("Anônimo"); setEmail("anonimo@anonimo.com")}}>
+                  Clique aqui caso queira fazer a denúncia de forma anônima
+              </button>
+            </div>
             <button 
               onClick={cadastrarDenuncia} 
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition-all duration-300">
