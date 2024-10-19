@@ -9,11 +9,22 @@ interface Artigo {
     data_criacao: string;
 }
 
-export default function ArtigoPage({ artigo }: { artigo: Artigo }) {
+export default function ArtigoPage({ artigo }: { artigo: Artigo | null }) {
     const router = useRouter();
 
+    // Exibir mensagem se o artigo não for encontrado
     if (!artigo) {
-        return <div>Artigo não encontrado</div>;
+        return (
+            <div className="bg-gray-700 min-h-screen">
+                <Navbar />
+                <main className="container mx-auto p-6">
+                    <div className="bg-gray-200 p-6 rounded-md shadow-md">
+                        <h1 className="text-gray-700 text-xl font-bold mb-4">Artigo não encontrado</h1>
+                        <p className="text-gray-600">Desculpe, mas o artigo que você está procurando não existe.</p>
+                    </div>
+                </main>
+            </div>
+        );
     }
 
     const formatarData = (data: string | Date) => {
@@ -59,7 +70,22 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const { id } = context.query;
 
     const response = await fetch(`http://localhost:3000/api/verArtigo/${id}`);
+    
+    // Verifica se a resposta da API foi bem-sucedida
+    if (!response.ok) {
+        return {
+            props: { artigo: null }, // Passa null se a resposta não for ok
+        };
+    }
+
     const artigo = await response.json();
+
+    // Verifica se o artigo não foi encontrado
+    if (!artigo) {
+        return {
+            props: { artigo: null }, // Passa null para o componente
+        };
+    }
 
     return {
         props: { artigo },
