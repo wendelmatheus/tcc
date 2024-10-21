@@ -1,5 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { verify } from 'jsonwebtoken';
+import { GetServerSidePropsContext } from "next";
+import { parseCookies } from "nookies";
+import { getAPIClient } from "../../pages/api/axios";
 
 export function autenticar(req: NextApiRequest, res: NextApiResponse) {
   const token = req.headers.authorization?.split(' ')[1];
@@ -30,3 +33,23 @@ export const formatarData = (data: string | Date) => {
   };
   return new Date(data).toLocaleString('pt-BR', options);
 };
+
+export async function withAuth(ctx: GetServerSidePropsContext) {
+  const apiClient = getAPIClient(ctx);
+  const { ["sitededenuncias.token"]: token } = parseCookies(ctx);
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  await apiClient.get("/api/hello");
+
+  return {
+    props: {},
+  };
+}

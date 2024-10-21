@@ -1,19 +1,33 @@
 import Navbar from "@/view/components/navbar";
 import { useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Report() {
-
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [assunto, setAssunto] = useState("");
   const [mensagem, setMensagem] = useState("");
-  const [codigoDenuncia, setCodigoDenuncia] = useState<string | null>(null); // Novo estado para o código da denúncia
+  const [codigoDenuncia, setCodigoDenuncia] = useState<string | null>(null);
+  const [captchaValido, setCaptchaValido] = useState(false);
 
   function verificarDados(nome: string, email: string, assunto: string, mensagem: string) {
     return nome !== "" && email !== "" && assunto !== "" && mensagem !== "";
   }
 
+  function onCaptchaChange(value: string | null) {
+    if (value) {
+      setCaptchaValido(true);
+    } else {
+      setCaptchaValido(false);
+    }
+  }
+
   function cadastrarDenuncia() {
+    if (!captchaValido) {
+      alert("Por favor, complete o reCAPTCHA.");
+      return;
+    }
+
     if (verificarDados(nome, email, assunto, mensagem)) {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
@@ -30,10 +44,10 @@ export default function Report() {
         body: urlencoded
       };
       
-      fetch("http://localhost:3000/api/denuncia", requestOptions)
+      fetch("http://localhost:3000/api/cadastrarDenuncia", requestOptions)
         .then((response) => {
           if (response.status === 200) {
-            alert("Denúncia feita com sucesso!")
+            alert("Denúncia feita com sucesso!");
             return response.json();
           } else {
             throw new Error("Erro ao cadastrar denúncia!");
@@ -58,7 +72,6 @@ export default function Report() {
       <div className="bg-gray-700 min-h-screen flex flex-col items-center justify-center py-10 px-4">
         <h1 className="text-3xl font-bold text-white mb-6">Faça sua Denúncia</h1>
         <div className="bg-gray-800 p-6 rounded-lg shadow-md w-full max-w-lg space-y-4">
-
           {codigoDenuncia && (
             <div>
               <label className="block text-white mb-1" htmlFor="name">Código da denúncia</label>
@@ -122,6 +135,12 @@ export default function Report() {
                   Clique aqui caso queira fazer a denúncia de forma anônima
               </button>
             </div>
+
+            {/* Centralizando o reCAPTCHA */}
+            <div className="flex justify-center mb-4">
+              <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={onCaptchaChange} />
+            </div>
+            
             <button 
               onClick={cadastrarDenuncia} 
               className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded transition-all duration-300">

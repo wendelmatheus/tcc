@@ -7,6 +7,7 @@ import { CldImage } from "next-cloudinary";
 import NavbarDashboard from "@/view/components/navbarDashboard";
 import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
+import { withAuth } from "@/controller/utilitarios/utils";
 
 const navigation = [
   { name: 'Home', href: '/', emoji: "🏠" },
@@ -46,22 +47,4 @@ export default function Dashboard() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getAPIClient(ctx);
-  const { ["sitededenuncias.token"]: token } = parseCookies(ctx);
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  await apiClient.get("/api/hello");
-
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps: GetServerSideProps = withAuth;

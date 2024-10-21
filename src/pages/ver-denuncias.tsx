@@ -6,7 +6,7 @@ import Link from "next/link";
 import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
 import { Spinner } from "@/view/components/spinner";
-import { formatarData } from "@/controller/utilitarios/utils";
+import { formatarData, withAuth } from "@/controller/utilitarios/utils";
 
 interface Denuncia {
   id: string;
@@ -92,22 +92,4 @@ export default function VerDenuncias() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const apiClient = getAPIClient(ctx);
-  const { ["sitededenuncias.token"]: token } = parseCookies(ctx);
-
-  if (!token) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  }
-
-  await apiClient.get("/api/hello");
-
-  return {
-    props: {},
-  };
-};
+export const getServerSideProps: GetServerSideProps = withAuth;

@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import Navbar from "@/view/components/navbar";
-import { formatarData } from '@/controller/utilitarios/utils';
+import { formatarData, withAuth } from '@/controller/utilitarios/utils';
 
 interface Artigo {
     id: string;
@@ -50,26 +50,4 @@ export default function ArtigoPage({ artigo }: { artigo: Artigo | null }) {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { id } = context.query;
-
-    const response = await fetch(`http://localhost:3000/api/verArtigo/${id}`);
-    
-    if (!response.ok) {
-        return {
-            props: { artigo: null },
-        };
-    }
-
-    const artigo = await response.json();
-
-    if (!artigo) {
-        return {
-            props: { artigo: null },
-        };
-    }
-
-    return {
-        props: { artigo },
-    };
-};
+export const getServerSideProps: GetServerSideProps = withAuth;
