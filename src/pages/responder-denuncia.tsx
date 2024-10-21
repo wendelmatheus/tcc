@@ -5,6 +5,7 @@ import { useState } from "react";
 import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
 import { formatarData } from "@/controller/utilitarios/utils";
+import { FiTrash2 } from "react-icons/fi";
 
 interface Denunciante {
   nome: string;
@@ -24,6 +25,43 @@ interface Denuncia {
 export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) {
   
   const [resposta, setResposta] = useState(denuncia.resposta || "");
+
+  async function handleAlterarStatus() {
+    const apiClient = getAPIClient();
+
+    const response = await apiClient.post("/api/alterarStatusDenuncia", {
+      id: denuncia.id,
+      status: "Recebido",
+    });
+
+    if (response.status === 200) {
+      alert("Denúncia aprovada!");
+      window.location.reload();
+    } else {
+      alert("Erro ao alterar o status.");
+    }
+  }
+
+  async function handleDelete() {
+    const confirmDelete = confirm('Tem certeza que deseja apagar esta denúncia?');
+
+    if (confirmDelete) {
+      const apiClient = getAPIClient();
+
+      try {
+        const response = await apiClient.delete(`/api/deletarDenuncia/${denuncia.id}`);
+
+        if (response.status === 200) {
+          alert('Denúncia apagada com sucesso!');
+          window.location.href = "/ver-denuncias";
+        } else {
+          alert('Erro ao apagar denúncia.');
+        }
+      } catch (error) {
+        console.error("Erro ao apagar a denúncia:", error);
+      }
+    }
+  }
 
   async function handleEnviarResposta() {
     const apiClient = getAPIClient();
@@ -110,7 +148,7 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
     { titulo: 'Assunto', subtitulo: `${denuncia.assunto}` },
     { titulo: 'Mensagem', subtitulo: `${denuncia.mensagem}` },
     { titulo: 'Status', subtitulo: `${denuncia.status}` },
-    { titulo: 'Data', subtitulo: `${denuncia.data_criacao}` }
+    { titulo: 'Data', subtitulo: `${formatarData(denuncia.data_criacao)}` }
   ];
 
   return (
@@ -131,29 +169,55 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
                 <p className="text-gray-800">{item.subtitulo}</p>
               </div>
             ))}
-            <div className="p-2">
-            <h3 className="mt-4 text-lg font-semibold text-gray-700">Responder Denúncia</h3>
-                <textarea
-                value={resposta}
-                onChange={(e) => setResposta(e.target.value)}
-                rows={4}
-                placeholder="Digite sua resposta..."
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out text-gray-800 resize-none"
-                ></textarea>
-                
+              {denuncia.status === "Aguardando" && (
                 <button 
-                    onClick={handleEnviarResposta} 
-                    className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow"
-                    >
-                    Enviar Resposta
-                </button>
-                <button 
-                onClick={handleEnviarEmail} 
-                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow m-2"
+                  onClick={handleAlterarStatus}
+                  className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow"
                 >
-                    Enviar Email
+                  Alterar status para Recebido
                 </button>
-            </div>
+              )}
+              {denuncia.status === "Aguardando"
+                ? <></>
+                :<>
+                  <div className="p-2">
+                  <h3 className="mt-4 text-lg font-semibold text-gray-700">Responder Denúncia</h3>
+                      <textarea
+                      value={resposta}
+                      onChange={(e) => setResposta(e.target.value)}
+                      rows={4}
+                      placeholder="Digite sua resposta..."
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200 ease-in-out text-gray-800 resize-none"
+                      ></textarea>
+                      <div className="flex items-center mt-8">
+
+                      </div>       
+                      <div className="p-2 flex justify-start items-center space-x-2">
+                        <button
+                            onClick={handleDelete}
+                            className="text-red-600 hover:text-red-800 transition duration-200 ease-in-out flex items-center mr-2"
+                            //className="mt-4 hover:bg-red-800 text-red-600 font-bold py-2 px-2 rounded-lg transition-all duration-300 shadow"
+                            //className="text-red-600 hover:text-red-800 transition duration-200 ease-in-out"
+                          >
+                            <FiTrash2 size={25} />
+                          </button>               
+                        <button 
+                            onClick={handleEnviarResposta} 
+                            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow"
+                            >
+                            Enviar Resposta
+                        </button>
+                        <button 
+                        onClick={handleEnviarEmail} 
+                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow m-2"
+                        >
+                            Enviar Email
+                        </button>
+                      </div>
+                  </div>                
+                </>
+               }
+
 
         </div>
         </main>

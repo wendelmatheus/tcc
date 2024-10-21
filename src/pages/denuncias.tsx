@@ -22,17 +22,21 @@ export default function Denuncias() {
   const itemsPerPage = 9;
 
   async function fetchDenuncias() {
-    setLoading(true)
+    setLoading(true);
     const response = await fetch('/api/verDenuncias');
     const data = await response.json();
-
-    const sortedData = data.sort((a: Denuncia, b: Denuncia) => {
+  
+    const filteredData = data.filter((denuncia: Denuncia) => 
+      denuncia.status === "Recebido" || denuncia.status === "Respondida"
+    );
+  
+    const sortedData = filteredData.sort((a: Denuncia, b: Denuncia) => {
       return new Date(b.data_criacao).getTime() - new Date(a.data_criacao).getTime();
     });
-
+  
     setDenuncias(sortedData);
     setFilteredDenuncias(sortedData);
-    setLoading(false)
+    setLoading(false);
   }
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {

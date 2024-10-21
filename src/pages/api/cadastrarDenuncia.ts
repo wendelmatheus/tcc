@@ -98,7 +98,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           id: idDenuncia,
           assunto,
           mensagem,
-          status: 'Recebido',
+          status: 'Aguardando',
           resposta: '',
           data_criacao: new Date(),
           denunciante,
