@@ -5,13 +5,11 @@ import Alert from "../view/components/alert";
 
 export default function Login(): JSX.Element {
   const { signIn } = useContext(AuthContext);
-
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
-
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
-  const [alertType, setAlertType] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error">("error");
 
   async function requisitarApiAutenticar(email: string, senha: string) {
     try {
@@ -52,25 +50,25 @@ export default function Login(): JSX.Element {
     setShowAlert(false);
   }
 
-    return (
-      <>
-        <button
-          onClick={() => router.push('/')}
-          className="absolute top-4 left-4 p-2 bg-white rounded-full shadow-lg hover:bg-zinc-200"
+  return (
+    <>
+      <button
+        onClick={() => router.push('/')}
+        className="absolute top-4 left-4 p-2 bg-white rounded-full shadow-lg hover:bg-zinc-200"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6 text-black"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6 text-black"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M19 12H5m7-7l-7 7 7 7" />
-          </svg>
-        </button>
+          <path d="M19 12H5m7-7l-7 7 7 7" />
+        </svg>
+      </button>
       <div className="h-screen font-sans bg-gray-700 flex items-center justify-center">
         <div className="w-full max-w-md">
           <div className="bg-gray-900 p-8 rounded-lg shadow-lg">
@@ -115,11 +113,15 @@ export default function Login(): JSX.Element {
                 </a>
               </div>
             </div>
-            {showAlert && <Alert type={alertType} message={alertMessage} onClose={handleAlertClose} />}
+            {/* Alert Component positioned at the bottom right */}
+            {showAlert && (
+              <div className="fixed bottom-4 right-4">
+                <Alert type={alertType} message={alertMessage} onClose={handleAlertClose} />
+              </div>
+            )}
           </div>
         </div>
       </div>
-      </>
-    );
-  }
-  
+    </>
+  );
+}

@@ -4,14 +4,26 @@ import { useState } from "react";
 import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
 import { withAuth } from "@/controller/utilitarios/utils";
+import Alert from "@/view/components/alert";
 
 export default function EscreverArtigo() {
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
 
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [alertType, setAlertType] = useState<"success" | "error">("error");
+
+  function handleAlertClose() {
+    setShowAlert(false);
+  }
+
   async function handlePublicarArtigo() {
     if (!titulo || !texto) {
-      alert("Preencha todos os campos!");
+      //alert("Preencha todos os campos!");
+      setAlertMessage("Preencha todos os campos!");
+      setAlertType("error");
+      setShowAlert(true);      
       return;
     }
 
@@ -23,13 +35,22 @@ export default function EscreverArtigo() {
       });
 
       if (response.status === 200) {
-        alert("Artigo publicado com sucesso!");
+        //alert("Artigo publicado com sucesso!");
+        setAlertMessage("Artigo publicado com sucesso!");
+        setAlertType("success");
+        setShowAlert(true);
       } else {
-        alert("Erro ao publicar o artigo.");
+        //alert("Erro ao publicar o artigo.");
+        setAlertMessage("Erro ao publicar o artigo.");
+        setAlertType("error");
+        setShowAlert(true);
       }
     } catch (error) {
       console.error("Erro ao publicar o artigo:", error);
-      alert("Erro ao publicar o artigo.");
+      //alert("Erro ao publicar o artigo.");
+      setAlertMessage("Erro ao publicar o artigo.");
+      setAlertType("error");
+      setShowAlert(true);      
     }
   }
 
@@ -75,6 +96,11 @@ export default function EscreverArtigo() {
               </button>
             </div>
           </div>
+          {showAlert && (
+              <div className="fixed bottom-4 right-4">
+                <Alert type={alertType} message={alertMessage} onClose={handleAlertClose} />
+              </div>
+          )}
         </main>
       </div>
     </div>

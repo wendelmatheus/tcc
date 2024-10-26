@@ -6,6 +6,7 @@ import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
 import { formatarData } from "@/controller/utilitarios/utils";
 import { FiTrash2 } from "react-icons/fi";
+import Alert from "@/view/components/alert";
 
 interface Denunciante {
   nome: string;
@@ -26,6 +27,14 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
   
   const [resposta, setResposta] = useState(denuncia.resposta || "");
 
+  const [alertType, setAlertType] = useState<"success" | "error">("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
+
+  function handleAlertClose() {
+    setShowAlert(false);
+  }
+
   async function handleAlterarStatus() {
     const apiClient = getAPIClient();
 
@@ -35,10 +44,16 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
     });
 
     if (response.status === 200) {
-      alert("Denúncia aprovada!");
+      //alert("Denúncia aprovada!");
+      setAlertType("success")
+      setAlertMessage("Denúncia aprovada!")
+      setShowAlert(true)
       window.location.reload();
     } else {
-      alert("Erro ao alterar o status.");
+      //alert("Erro ao alterar o status.");
+      setAlertType("error")
+      setAlertMessage("Erro ao alterar o status.")
+      setShowAlert(true)
     }
   }
 
@@ -52,10 +67,16 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
         const response = await apiClient.delete(`/api/denuncia/deletarDenuncia/${denuncia.id}`);
 
         if (response.status === 200) {
-          alert('Denúncia apagada com sucesso!');
+          //alert('Denúncia apagada com sucesso!');
+          setAlertType("success")
+          setAlertMessage("Denúncia apagada com sucesso!")
+          setShowAlert(true)          
           window.location.href = "/ver-denuncias";
         } else {
-          alert('Erro ao apagar denúncia.');
+          //alert('Erro ao apagar denúncia.');
+          setAlertType("error")
+          setAlertMessage("Erro ao apagar denúncia.")
+          setShowAlert(true)  
         }
       } catch (error) {
         console.error("Erro ao apagar a denúncia:", error);
@@ -72,9 +93,15 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
     });
 
     if (response.status === 200) {
-      alert("Resposta enviada com sucesso!");
+      //alert("Resposta enviada com sucesso!");
+      setAlertType("success")
+      setAlertMessage("Resposta enviada com sucesso!")
+      setShowAlert(true)  
     } else {
-      alert("Erro ao enviar a resposta.");
+      //alert("Erro ao enviar a resposta.");
+      setAlertType("error")
+      setAlertMessage("Erro ao enviar a resposta.")
+      setShowAlert(true)  
     }
   }
 
@@ -84,7 +111,10 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
         const respostaParaEmail = resposta || denuncia.resposta;
     
         if (!respostaParaEmail) {
-          alert("Erro: Resposta não preenchida!");
+          //alert("Erro: Resposta não preenchida!");
+          setAlertType("error")
+          setAlertMessage("Resposta não preenchida!")
+          setShowAlert(true)  
           return;
         }
 
@@ -135,9 +165,15 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
         });
     
         if (response.status === 200) {
-          alert("Email enviado com sucesso!");
+          //alert("Email enviado com sucesso!");
+          setAlertType("success")
+          setAlertMessage("Email enviado com sucesso!")
+          setShowAlert(true)  
         } else {
-          alert("Erro ao enviar o email.");
+          //alert("Erro ao enviar o email.");
+          setAlertType("error")
+          setAlertMessage("Erro ao enviar o email.")
+          setShowAlert(true)  
         }
     }
 
@@ -170,16 +206,27 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
               </div>
             ))}
               {denuncia.status === "Aguardando" && (
+            <div className="p-2 flex justify-start items-center space-x-2">
+              <button
+                  onClick={handleDelete}
+                  className="text-red-600 hover:text-red-800 transition duration-200 ease-in-out flex items-center mr-2"
+                  //className="mt-4 hover:bg-red-800 text-red-600 font-bold py-2 px-2 rounded-lg transition-all duration-300 shadow"
+                  //className="text-red-600 hover:text-red-800 transition duration-200 ease-in-out"
+                >
+                  <FiTrash2 size={25} />
+                </button>     
                 <button 
                   onClick={handleAlterarStatus}
                   className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition-all duration-300 shadow"
                 >
                   Alterar status para Recebido
                 </button>
+            </div>
+
               )}
               {denuncia.status === "Aguardando"
                 ? <></>
-                :<>
+                : <>
                   <div className="p-2">
                   <h3 className="mt-4 text-lg font-semibold text-gray-700">Responder Denúncia</h3>
                       <textarea
@@ -217,9 +264,12 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
                   </div>                
                 </>
                }
-
-
         </div>
+        {showAlert && (
+        <div className="fixed bottom-4 right-4">
+          <Alert type={alertType} message={alertMessage} onClose={handleAlertClose} />
+        </div>
+        )}
         </main>
       </div>
     </div>

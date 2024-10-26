@@ -1,38 +1,34 @@
+import React from "react";
+import { FiXCircle } from "react-icons/fi";
+
 type AlertProps = {
-    type: string;
-    message: string;
-    onClose: () => void;
-  };
-  
-  const Alert = ({ type, message, onClose }: AlertProps) => {
-    let color = "";
-    let title = "";
-    if (type === "success") {
-      color = "green";
-      title = "Sucesso!";
-    } else if (type === "error") {
-      color = "red";
-      title = "Erro!";
-    }
-  
-    return (
-      <div className={`bg-${color}-700 border border-white text-white px-4 py-3 rounded relative m-2`} role="alert">
+  type: "success" | "error";
+  message: string;
+  onClose: () => void;
+};
+
+export default function Alert({ type, message, onClose }: AlertProps) {
+
+  let title = "";
+
+  if(type === "success") {
+    title = "Sucesso!"
+  } else {
+    title = "Erro!"
+  }
+
+  return (
+    <div className={`fixed bottom-4 right-4 max-w-xs p-4 rounded-lg shadow-lg items-center transition-opacity ${type === "success" ? "bg-green-600" : "bg-red-600"} text-white`}>
+      <div></div>
+      <div className="flex flex-row space-x-2 justify-between">
         <strong className="font-bold flex gap-1">{title}</strong>
-        <span className="block sm:inline">{message}</span>
-        <span className="absolute top-0 bottom-0 right-0 px-4 py-3">
-          <svg
-            onClick={onClose}
-            className={`fill-current h-6 w-6 text-${color}-500`}
-            role="button"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
-          >
-            <title>Close</title>
-            <path d="M14.348 14.849a1.2 1.2 0 0 1-1.697 0L10 11.819l-2.651 3.029a1.2 1.2 0 1 1-1.697-1.697l2.758-3.15-2.759-3.152a1.2 1.2 0 1 1 1.697-1.697L10 8.183l2.651-3.031a1.2 1.2 0 1 1 1.697 1.697l-2.758 3.152 2.758 3.15a1.2 1.2 0 0 1 0 1.698z" />
-          </svg>
-        </span>
+        <button onClick={onClose} className="text-white ml-auto focus:outline-none hover:text-gray-300">
+          <FiXCircle size={20} />
+        </button>
       </div>
-    );
-  };
-  
-  export default Alert;
+
+      <span className="block sm:inline">{message}</span>
+
+    </div>
+  );
+}

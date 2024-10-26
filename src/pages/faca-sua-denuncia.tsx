@@ -1,3 +1,4 @@
+import Alert from "@/view/components/alert";
 import Navbar from "@/view/components/navbar";
 import { useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
@@ -9,6 +10,10 @@ export default function Report() {
   const [mensagem, setMensagem] = useState("");
   const [codigoDenuncia, setCodigoDenuncia] = useState<string | null>(null);
   const [captchaValido, setCaptchaValido] = useState(false);
+
+  const [alertType, setAlertType] = useState<"success" | "error">("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
 
   function verificarDados(nome: string, email: string, assunto: string, mensagem: string) {
     return nome !== "" && email !== "" && assunto !== "" && mensagem !== "";
@@ -22,32 +27,40 @@ export default function Report() {
     }
   }
 
+  function handleAlertClose() {
+    setShowAlert(false);
+  }
+
   function cadastrarDenuncia() {
     if (!captchaValido) {
-      alert("Por favor, complete o reCAPTCHA.");
+      setAlertMessage("Por favor, complete o reCAPTCHA.");
+      setAlertType("error");
+      setShowAlert(true);
       return;
     }
 
     if (verificarDados(nome, email, assunto, mensagem)) {
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-      
+
       const urlencoded = new URLSearchParams();
       urlencoded.append("nome", nome);
       urlencoded.append("email", email);
       urlencoded.append("assunto", assunto);
       urlencoded.append("mensagem", mensagem);
-      
+
       const requestOptions = {
         method: "POST",
         headers: myHeaders,
-        body: urlencoded
+        body: urlencoded,
       };
-      
+
       fetch("http://localhost:3000/api/denuncia/cadastrarDenuncia", requestOptions)
         .then((response) => {
           if (response.status === 200) {
-            alert("Denúncia feita com sucesso!");
+            setAlertMessage("Denúncia feita com sucesso!");
+            setAlertType("success");
+            setShowAlert(true);
             return response.json();
           } else {
             throw new Error("Erro ao cadastrar denúncia!");
@@ -59,10 +72,14 @@ export default function Report() {
         })
         .catch((error) => {
           console.error("Erro ao registrar denúncia:", error);
-          alert("Erro ao registrar a denúncia.");
+          setAlertMessage("Erro ao registrar a denúncia!");
+          setAlertType("error");
+          setShowAlert(true);
         });
     } else {
-      alert("Preencha todos os dados!");
+      setAlertMessage("Preencha todos os dados!");
+      setAlertType("error");
+      setShowAlert(true);
     }
   }
 
@@ -136,7 +153,6 @@ export default function Report() {
               </button>
             </div>
 
-            {/* Centralizando o reCAPTCHA */}
             <div className="flex justify-center mb-4">
               <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} onChange={onCaptchaChange} />
             </div>
@@ -149,6 +165,12 @@ export default function Report() {
           </div>
         </div>
       </div>
+      
+      {showAlert && (
+        <div className="fixed bottom-4 right-4">
+          <Alert type={alertType} message={alertMessage} onClose={handleAlertClose} />
+        </div>
+      )}
     </>
   );
 }
