@@ -44,7 +44,7 @@ export default function Report() {
         body: urlencoded
       };
       
-      fetch("http://localhost:3000/api/cadastrarDenuncia", requestOptions)
+      fetch("http://localhost:3000/api/denuncia/cadastrarDenuncia", requestOptions)
         .then((response) => {
           if (response.status === 200) {
             alert("Denúncia feita com sucesso!");

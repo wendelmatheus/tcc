@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { AppDataSource } from '../../../db/controller/conexaoBanco';
-import { Artigo } from '../../../db/entities/Artigo';
+import { AppDataSource } from '../../../../db/controller/conexaoBanco';
+import { Artigo } from '../../../../db/entities/Artigo';
 import { autenticar } from '@/controller/utilitarios/utils';
 
 function verificarDados(titulo: string | undefined, texto: string | undefined) {

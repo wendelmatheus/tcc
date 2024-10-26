@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { AppDataSource } from '../../../db/controller/conexaoBanco';
-import { Denunciante } from '../../../db/entities/Denunciante';
+import { AppDataSource } from '../../../../db/controller/conexaoBanco';
+import { Denunciante } from '../../../../db/entities/Denunciante';
  
 function verificarDados(nome: string | undefined, email: string | undefined) {
     return (nome ?? "") !== "" && (email ?? "") !== "";

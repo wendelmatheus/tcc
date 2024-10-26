@@ -23,7 +23,7 @@ export default function Denuncias() {
 
   async function fetchDenuncias() {
     setLoading(true);
-    const response = await fetch('/api/verDenuncias');
+    const response = await fetch('/api/denuncia/verDenuncias');
     const data = await response.json();
   
     const filteredData = data.filter((denuncia: Denuncia) => 

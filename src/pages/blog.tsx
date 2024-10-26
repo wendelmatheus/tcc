@@ -19,7 +19,7 @@ export default function Blog() {
 
   async function fetchArtigos() {
     setLoading(true)
-    const response = await fetch("/api/verArtigos");
+    const response = await fetch("/api/artigo/verArtigos");
     const data = await response.json();
     
     const sortedData = data.sort(

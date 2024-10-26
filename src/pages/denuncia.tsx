@@ -61,7 +61,7 @@ export default function Denuncia({ denuncia }: { denuncia: Denuncia }) {
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const { id } = context.query;
 
-  const response = await fetch(`http://localhost:3000/api/verDenuncia/${id}`);
+  const response = await fetch(`http://localhost:3000/api/denuncia/verDenuncia/${id}`);
   const denuncia = await response.json();
 
   return {

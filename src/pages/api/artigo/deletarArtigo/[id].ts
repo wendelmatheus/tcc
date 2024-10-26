@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { AppDataSource } from '../../../../db/controller/conexaoBanco';
-import { Artigo } from '../../../../db/entities/Artigo';
+import { AppDataSource } from '../../../../../db/controller/conexaoBanco';
+import { Artigo } from '../../../../../db/entities/Artigo';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query; // Extrai o `id` do artigo da URL

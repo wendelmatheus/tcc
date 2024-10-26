@@ -20,7 +20,7 @@ export default function Artigos() {
 
   async function fetchArtigos() {
     setLoading(true);
-    const response = await fetch("/api/verArtigos");
+    const response = await fetch("/api/artigo/verArtigos");
     const data = await response.json();
     setArtigos(data);
     setLoading(false);

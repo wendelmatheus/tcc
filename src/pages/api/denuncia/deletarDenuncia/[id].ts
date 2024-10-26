@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { AppDataSource } from '../../../../db/controller/conexaoBanco';
-import { Denuncia } from '../../../../db/entities/Denuncia';
+import { AppDataSource } from '../../../../../db/controller/conexaoBanco';
+import { Denuncia } from '../../../../../db/entities/Denuncia';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;

@@ -25,7 +25,7 @@ export default function VisualizarArtigo({ artigo }: { artigo: Artigo }) {
       const apiClient = getAPIClient();
 
       try {
-        const response = await apiClient.delete(`/api/deletarArtigo/${artigo.id}`);
+        const response = await apiClient.delete(`/api/artigo/deletarArtigo/${artigo.id}`);
         if (response.status === 200) {
           alert("Artigo apagado com sucesso!");
           window.location.href = "/blog/artigos";
@@ -90,7 +90,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   }
 
   try {
-    const response = await apiClient.get(`/api/verArtigo/${id}`);
+    const response = await apiClient.get(`/api/artigo/verArtigo/${id}`);
     const artigo = response.data;
 
     return {

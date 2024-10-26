@@ -29,7 +29,7 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
   async function handleAlterarStatus() {
     const apiClient = getAPIClient();
 
-    const response = await apiClient.post("/api/alterarStatusDenuncia", {
+    const response = await apiClient.post("/api/denuncia/alterarStatusDenuncia", {
       id: denuncia.id,
       status: "Recebido",
     });
@@ -49,7 +49,7 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
       const apiClient = getAPIClient();
 
       try {
-        const response = await apiClient.delete(`/api/deletarDenuncia/${denuncia.id}`);
+        const response = await apiClient.delete(`/api/denuncia/deletarDenuncia/${denuncia.id}`);
 
         if (response.status === 200) {
           alert('Denúncia apagada com sucesso!');
@@ -66,7 +66,7 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
   async function handleEnviarResposta() {
     const apiClient = getAPIClient();
 
-    const response = await apiClient.post("/api/responderDenuncia", {
+    const response = await apiClient.post("/api/denuncia/responderDenuncia", {
       idDenuncia: denuncia.id,
       resposta,
     });
@@ -240,7 +240,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     };
   }
 
-  const response = await apiClient.get(`/api/verDenuncia/${id}`);
+  const response = await apiClient.get(`/api/denuncia/verDenuncia/${id}`);
   const denuncia = response.data;
 
   return {

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { AppDataSource } from '../../../db/controller/conexaoBanco';
-import { Denunciante } from '../../../db/entities/Denunciante';
-import { Denuncia } from '../../../db/entities/Denuncia';
+import { AppDataSource } from '../../../../db/controller/conexaoBanco';
+import { Denunciante } from '../../../../db/entities/Denunciante';
+import { Denuncia } from '../../../../db/entities/Denuncia';
 import { v4 as uuidv4 } from 'uuid';
 import nodemailer from 'nodemailer';
 

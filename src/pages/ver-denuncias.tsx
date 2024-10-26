@@ -26,7 +26,7 @@ export default function VerDenuncias() {
     const apiClient = getAPIClient();
   
     try {
-      const response = await apiClient.get("/api/verDenuncias");
+      const response = await apiClient.get("/api/denuncia/verDenuncias");
       const data = response.data;
   
       const sortedData = data.sort((a: Denuncia, b: Denuncia) => {

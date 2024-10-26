@@ -17,7 +17,7 @@ export default function EscreverArtigo() {
 
     try {
       const apiClient = getAPIClient();
-      const response = await apiClient.post("/api/cadastrarArtigo", {
+      const response = await apiClient.post("/api/artigo/cadastrarArtigo", {
         titulo,
         texto,
       });

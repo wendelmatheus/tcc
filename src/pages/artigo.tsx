@@ -50,4 +50,13 @@ export default function ArtigoPage({ artigo }: { artigo: Artigo | null }) {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = withAuth;
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { id } = context.query;
+  
+    const response = await fetch(`http://localhost:3000/api/artigo/verArtigo/${id}`);
+    const artigo = await response.json();
+  
+    return {
+      props: { artigo },
+    };
+  };
