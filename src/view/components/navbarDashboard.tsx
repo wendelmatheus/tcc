@@ -2,8 +2,8 @@ export default function NavbarDashboard() {
 
     const navigation = [
         { name: 'Home', href: '/', emoji: "🏠" },
-        { name: 'Escrever artigo', href: '/escrever-artigo', emoji: '📝' },
-        { name: 'Ver denúncias', href: '/ver-denuncias', emoji: '🔍' }
+        { name: 'Blog', href: '/blog/artigos', emoji: '📝' },
+        { name: 'Denúncias', href: '/ver-denuncias', emoji: '🔍' }
     ];
 
     return (

@@ -1,12 +1,11 @@
 import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
-import { getAPIClient } from "./api/axios";
+import { getAPIClient } from "../api/axios";
 import { useState } from "react";
 import HeaderDashboard from "@/view/components/headerDashboard";
 import SidebarDashboard from "@/view/components/sidebarDashboard";
 import { withAuth } from "@/controller/utilitarios/utils";
 
-export default function Dashboard() {
+export default function EscreverArtigo() {
   const [titulo, setTitulo] = useState("");
   const [texto, setTexto] = useState("");
 
@@ -41,7 +40,7 @@ export default function Dashboard() {
 
       <div className="flex-1 flex flex-col">
 
-        <HeaderDashboard titulo="Artigos"/>
+        <HeaderDashboard titulo="Escrever"/>
 
         <main className="flex-1 p-6 bg-gray-100">
           <div className="bg-white p-6 rounded-lg shadow-md">
