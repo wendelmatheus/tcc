@@ -22,7 +22,11 @@ export default function Artigos() {
     setLoading(true);
     const response = await fetch("/api/artigo/verArtigos");
     const data = await response.json();
-    setArtigos(data);
+    
+    // Ordena os artigos por data de criação (mais recente para o mais antigo)
+    const sortedData = data.sort((a: Artigo, b: Artigo) => new Date(b.data_criacao).getTime() - new Date(a.data_criacao).getTime());
+  
+    setArtigos(sortedData);
     setLoading(false);
   }
 
