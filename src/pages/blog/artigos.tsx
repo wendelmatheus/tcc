@@ -78,16 +78,16 @@ export default function Artigos() {
             <Spinner />
           ) : (
             <>
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                {currentArtigos.map((artigo) => (
-                  <Link key={artigo.id} href={`/blog/visualizar-artigo?id=${artigo.id}`}>
-                    <div className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow">
-                      <h3 className="text-lg font-semibold text-gray-800">{artigo.titulo}</h3>
-                      <p className="text-gray-600">{new Date(artigo.data_criacao).toLocaleDateString()}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+              {currentArtigos.map((artigo) => (
+                <Link key={artigo.id} href={`/blog/visualizar-artigo?id=${artigo.id}`}>
+                  <div className="bg-white p-4 rounded-lg shadow-md cursor-pointer hover:shadow-lg transition-shadow min-h-[120px] flex flex-col justify-between">
+                    <h3 className="text-lg font-semibold text-gray-800 line-clamp-2">{artigo.titulo}</h3>
+                    <p className="text-gray-600 mt-2">{new Date(artigo.data_criacao).toLocaleDateString()}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
 
               <div className="flex justify-center mt-6 space-x-2">
                 {getPageNumbers().map((page, index) =>
