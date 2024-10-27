@@ -199,8 +199,8 @@ export default function ResponderDenuncia({ denuncia }: { denuncia: Denuncia }) 
         <main className="flex-1 p-6 bg-gray-100">
         <div className="bg-white p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold text-gray-700 p-2">Detalhes da Denúncia</h3>
-            {data.map((item) => (
-              <div className="p-2">
+            {data.map((item, index) => (
+              <div key={index} className="p-2">
                 <p className="text-gray-800"><strong>{item.titulo}</strong></p>
                 <p className="text-gray-800">{item.subtitulo}</p>
               </div>

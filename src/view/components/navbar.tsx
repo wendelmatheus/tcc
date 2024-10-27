@@ -6,6 +6,7 @@ import { destroyCookie, parseCookies } from 'nookies';
 import router from "next/router";
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
+import Image from 'next/image';
 
 const navigation = [
   { name: 'Home', href: '/' },
@@ -51,11 +52,18 @@ export default function Navbar() {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-            <img
+            <Image
+              alt="Logo"
+              src="/images/logo.png"
+              width={32}
+              height={32} 
+              className="h-8 w-auto"
+            />
+            {/* <img
                 alt="Logo"
                 src="/images/logo.png"
                 className="h-8 w-auto"
-            />
+            /> */}
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
@@ -83,11 +91,18 @@ export default function Navbar() {
                   <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                    <img
+                    <Image
+                      alt="Foto de perfil"
+                      src={user?.imagem || "https://github.com/wendelmatheus.png"} // valor alternativo para garantir que a imagem sempre carregue
+                      width={32}
+                      height={32}
+                      className="h-8 w-8 rounded-full"
+                    />
+                    {/* <img
                       alt="Foto de perfil"
                       src={user?.imagem} //"https://github.com/wendelmatheus.png"
                       className="h-8 w-8 rounded-full"
-                    />
+                    /> */}
                   </MenuButton>
                 </div>
                 <MenuItems
@@ -95,9 +110,12 @@ export default function Navbar() {
                   className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
                 >
                   <MenuItem>
-                    <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
-                      Acessar dashboard
-                    </a>
+                  <Link href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                    Acessar dashboard
+                  </Link>
+                      {/* <a href="/dashboard" className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">
+                        Acessar dashboard
+                      </a> */}
                   </MenuItem>
                   <MenuItem>
                     <p onClick={handleClickSair} className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100">

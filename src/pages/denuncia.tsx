@@ -39,8 +39,8 @@ export default function Denuncia({ denuncia }: { denuncia: Denuncia }) {
         <div className="bg-gray-200 p-6 rounded-md shadow-md">
           <h1 className="text-gray-700 text-xl font-bold mb-4">Detalhes da Denúncia</h1>
 
-          {data.map((item) => (
-            <div className="text-gray-600 p-2">
+          {data.map((item, index) => (
+            <div key={index} className="text-gray-600 p-2">
               <p><strong>{item.titulo}</strong></p>
               <p>{item.subtitulo}</p>
             </div>
