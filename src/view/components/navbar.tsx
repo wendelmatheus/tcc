@@ -52,18 +52,18 @@ export default function Navbar() {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex flex-shrink-0 items-center">
-            <Image
+            {/* <Image
               alt="Logo"
               src="/images/logo.png"
               width={32}
               height={32} 
               className="h-8 w-auto"
-            />
-            {/* <img
+            /> */}
+            <img
                 alt="Logo"
                 src="/images/logo.png"
                 className="h-8 w-auto"
-            /> */}
+            />
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
@@ -91,18 +91,18 @@ export default function Navbar() {
                   <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                     <span className="absolute -inset-1.5" />
                     <span className="sr-only">Open user menu</span>
-                    <Image
+                    {/* <Image
                       alt="Foto de perfil"
                       src={user?.imagem || "https://github.com/wendelmatheus.png"} // valor alternativo para garantir que a imagem sempre carregue
                       width={32}
                       height={32}
                       className="h-8 w-8 rounded-full"
-                    />
-                    {/* <img
+                    /> */}
+                    <img
                       alt="Foto de perfil"
                       src={user?.imagem} //"https://github.com/wendelmatheus.png"
                       className="h-8 w-8 rounded-full"
-                    /> */}
+                    />
                   </MenuButton>
                 </div>
                 <MenuItems

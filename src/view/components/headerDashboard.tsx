@@ -30,35 +30,35 @@ export default function HeaderDashboard({ titulo }: HeaderDashboardProps) {
           </div>
         </div>
         <div className="relative">
-        <Image
+        {/* <Image
           src={user?.imagem || '/default-profile.png'}
           alt="Profile Photo"
           width={40}
           height={40} 
           className="rounded-full cursor-pointer"
           onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-        />
-          {/* <img
+        /> */}
+          <img
             src={user?.imagem}             
             alt="Profile Photo"
             className="w-10 h-10 rounded-full cursor-pointer"
             onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
-          /> */}
+          />
           {isProfileMenuOpen && (
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-2 z-20">
               <div className="flex flex-col items-center px-4 py-2">
-              <Image
+              {/* <Image
                 src={user?.imagem || '/default-profile.png'} 
                 alt="Profile photo"
                 width={48} 
                 height={48}
                 className="rounded-full mb-2"
-              />
-                {/* <img
+              /> */}
+                <img
                   src={user?.imagem}
                   alt="Profile photo"
                   className="w-12 h-12 rounded-full mb-2"
-                /> */}
+                />
                 <p className="text-sm font-medium text-gray-800">{user?.nome}</p>
                 <p className="text-xs text-gray-500">{user?.email}</p>
               </div>
